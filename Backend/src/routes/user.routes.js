@@ -23,12 +23,5 @@ router.get('/admin',
     }
 )
 
-router.get('/students',
-    authMiddleware,
-    roleMiddleware('Admin','Counseller'),
-    (req,res)=>{
-        res.json({msg:"Student  data"})
-    }
-)
 
 module.exports = router

@@ -1,30 +1,37 @@
 const jwt = require('jsonwebtoken');
 
 exports.authMiddleware = (req, res, next) => {
-  // header se token lena
-  const authHeader = req.headers.authorization;
-
-  console.log("HEADER:", authHeader); 
-
-  // check token
-  if (!authHeader) {
-    return res.status(401).json({ msg: "No Token, Access Denied" });
-  }
-
-  // "Bearer token" me se token nikaal
-  const token = authHeader.split(' ')[1]; //
-
   try {
-    // verify token
-    const decoded = jwt.verify(token, process.env.SECRET_KEY);
+    const authHeader = req.headers.authorization;
+
+    console.log("HEADER:", authHeader);
+
+    // ❌ No token
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      return res.status(401).json({ msg: "No Token, Access Denied" });
+    }
+
+    // ✅ Extract token
+    const token = authHeader.split(" ")[1];
+
+    if (!token) {
+      return res.status(401).json({ msg: "Token Missing" });
+    }
+
+    console.log("TOKEN:", token);
     console.log("SECRET:", process.env.SECRET_KEY);
 
-    // save user
+    // ✅ Verify token
+    const decoded = jwt.verify(token, process.env.SECRET_KEY);
+
+    // ✅ Attach user
     req.user = decoded;
-    console.log(token)
 
     next();
+
   } catch (error) {
-    res.status(401).json({ msg: "Invalid Token" });
+    console.log("AUTH ERROR:", error.message);
+
+    return res.status(401).json({ msg: "Invalid Token" });
   }
 };

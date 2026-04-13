@@ -19,10 +19,21 @@ const userSchema = new mongoose.Schema({
      },
      user_role:{
          type:String,
-         enum:['Student', 'Counsellor', 'Admin' ],
+         enum:['Student', 'Counsellor', 'Admin'],
          default:'Student',
 
      },
+     phone:{
+      type: String,
+     },
+
+     isActive: {
+      type:Boolean,
+      default: true
+     }
+
+
+
      //fields for only student
 
      
