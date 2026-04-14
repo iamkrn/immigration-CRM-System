@@ -33,7 +33,11 @@ const Sidebar = () => {
 
         <NavLink to="/documents" className={menuClass}>
           📁 Documents
+        </NavLink>  
+        <NavLink to="/profile" className={menuClass}>
+          Profile
         </NavLink>
+
 
       </nav>
 
