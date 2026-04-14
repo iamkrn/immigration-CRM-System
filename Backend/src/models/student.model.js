@@ -1,17 +1,48 @@
 const mongoose = require('mongoose');
 
 const studentSchema = new mongoose.Schema({
-   name:String,
-   email:String,
-   phone:String,
+   //Basic
+    firstName: String,
+    lastName: String,
+    email:String,
+    phone:String,
+    WhatsApp: String,
+    dob:String,
+    age:Number,
 
-   preferredCountry:String,
+    //family
+    fatherName:String,
+    motherName: String,
 
-   leadStatus:{
+    //location
+    address:String,
+    city:String,
+    state:String,
+    pinCode:Number,
+    country:String,
+
+    //Education
+    education:String,
+    qualification:String,
+    passingYear:String,
+
+    //Immigration
+    preferredCountry:String,
+    visaType:String,
+    intakeYear: String,
+
+    //CRM
+    leadStatus:{
     type:String,
     enum:['hot','cold', 'warm'],
-    default:'cold'
-   }
+    default:'new'
+   },
+
+   //future
+   ieltsScore:String,
+   passport:String,
+   sop:String,
+   lor:String,
 },{timestamps:true})
 
 module.exports = mongoose.model('Student',studentSchema)

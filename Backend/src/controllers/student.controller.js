@@ -4,9 +4,24 @@ const Student = require('../models/student.model');
 //Create a student
 exports.createStudent = async(req,res)=>{
 try {
-    const {name, email} = req.body
+    const {firstName,
+           lastName,
+           email,
+           phone,
+           dob,
+           age,
+           fatherName,
+           motherName,
+           address,
+           city,
+           pincode,
+           country,
+           state,
+           preferredCountry,
+           qualification,
+        leadStatus} = req.body
 
-    if(!name  || !email){
+    if(!firstName  || !email){
         return res.status(400).json({
             message:'please required field',
             success:false
