@@ -12,6 +12,7 @@ import Register from "./pages/Register";
 import AddCustomer from "./Forms-pages/AddCustomer";
 import ProtectedRoute from "./components/ProtectedRoutes";
 import PublicRoute from "./components/PublicRoutes";
+import EditCustomer from "./Forms-pages/EditCustomer";
 
 const App = () => {
   return (
@@ -49,6 +50,7 @@ const App = () => {
           <Route index element={<Dashboard />} />
           <Route path="customers" element={<Customer />} />
           <Route path="add-customer" element={<AddCustomer/>}/>
+          <Route path="/edit-customer/:id" element={<EditCustomer/>}/>
           <Route path="applications" element={<Application />} />
           <Route path="documents" element={<Document />} />
           <Route path="profile" element={<Profile />} />

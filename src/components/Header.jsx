@@ -1,8 +1,22 @@
-const Header = () => {
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+
+
+
+const Header = ({setSearch}) => {
+  const navigate = useNavigate()
+  const [input, setInput] = useState("");
+
     const handleLogout = () => {
     localStorage.removeItem("token");
     navigate("/login");
   };
+
+  const handleSearch = (e) => {
+    const value = e.target.value;
+    setInput(value);
+    setSearch(value)//send to parent
+  }
 
   return (
     <div className="bg-white shadow px-6 py-3 flex justify-between items-center">
@@ -18,7 +32,9 @@ const Header = () => {
         
         <input
           type="text"
-          placeholder="Search..."
+          value={input}
+          onChange={handleSearch}
+          placeholder="Search customers..."
           className="border px-3 py-1 rounded-lg outline-none"
         />
         <button
