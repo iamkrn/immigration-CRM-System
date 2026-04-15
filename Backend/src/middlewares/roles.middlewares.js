@@ -9,9 +9,7 @@ exports.roleMiddleware = (...allowedRoles) => {
 
       const normalizedRoles = allowedRoles.map(r => r.toLowerCase());
 
-      console.log("USER ROLE:", userRole);
-      console.log("ALLOWED ROLES:", normalizedRoles);
-
+     
       if (!normalizedRoles.includes(userRole)) {
         return res.status(403).json({ msg: "Access Denied" });
       }
