@@ -13,6 +13,8 @@ import AddCustomer from "./Forms-pages/AddCustomer";
 import ProtectedRoute from "./components/ProtectedRoutes";
 import PublicRoute from "./components/PublicRoutes";
 import EditCustomer from "./Forms-pages/EditCustomer";
+import AddApplication from "./Forms-pages/AddApplication";
+import EditApplication from "./Forms-pages/EditApplication";
 
 const App = () => {
   return (
@@ -52,6 +54,10 @@ const App = () => {
           <Route path="add-customer" element={<AddCustomer/>}/>
           <Route path="/edit-customer/:id" element={<EditCustomer/>}/>
           <Route path="applications" element={<Application />} />
+          <Route path="/add-application" element={<AddApplication />} />
+          <Route path="/edit-application/:id" element={<EditApplication/>}/>
+
+
           <Route path="documents" element={<Document />} />
           <Route path="profile" element={<Profile />} />
         </Route>
