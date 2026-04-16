@@ -15,7 +15,7 @@ import PublicRoute from "./components/PublicRoutes";
 import EditCustomer from "./Forms-pages/EditCustomer";
 import AddApplication from "./Forms-pages/AddApplication";
 import EditApplication from "./Forms-pages/EditApplication";
-
+import AddDocument from "./Forms-pages/AddDocument";
 const App = () => {
   return (
     <BrowserRouter>
@@ -56,9 +56,11 @@ const App = () => {
           <Route path="applications" element={<Application />} />
           <Route path="/add-application" element={<AddApplication />} />
           <Route path="/edit-application/:id" element={<EditApplication/>}/>
+          
 
 
-          <Route path="documents" element={<Document />} />
+          <Route path="/documents/:applicationId" element={<Document />} />
+          <Route path="add-document/:applicationId" element={<AddDocument />} />
           <Route path="profile" element={<Profile />} />
         </Route>
 

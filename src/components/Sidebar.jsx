@@ -11,7 +11,6 @@ const Sidebar = () => {
   return (
     <div className="w-64 bg-gray-900 text-white flex flex-col h-full">
       
-      {/* Logo */}
       <div className="p-4 text-2xl font-bold border-b border-gray-700">
         CRM 🚀
       </div>
@@ -21,7 +20,6 @@ const Sidebar = () => {
         <NavLink to="/" className={menuClass}>🏠 Dashboard</NavLink>
         <NavLink to="/customers" className={menuClass}>👥 Customers</NavLink>
         <NavLink to="/applications" className={menuClass}>📄 Applications</NavLink>
-        <NavLink to="/documents" className={menuClass}>📁 Documents</NavLink>
         <NavLink to="/profile" className={menuClass}>👤 Profile</NavLink>
       </nav>
 
