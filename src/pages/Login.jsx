@@ -20,19 +20,18 @@ function Login() {
   try {
     const res = await API.post("/auth/login", form);
 
-    console.log("TOKEN:", res.data.token);
+localStorage.setItem("token", res.data.token);
+localStorage.setItem("user", JSON.stringify(res.data.user)); 
 
-    localStorage.setItem("token", res.data.token); 
+alert("Login Success");
+navigate("/");
 
-    alert("Login Success");
-    navigate("/");
 
   } catch (err) {
     console.log(err);
     alert(err.response?.data?.msg || "Error");
   }
-};;
-  return (
+}; return (
     <div className="flex justify-center items-center h-screen bg-gray-100">
       <form onSubmit={handleSubmit} className="bg-white p-6 rounded-xl shadow w-80 flex flex-col gap-3">
         

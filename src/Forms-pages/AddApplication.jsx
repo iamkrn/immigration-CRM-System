@@ -9,7 +9,7 @@ const AddApplication = () => {
         country: "",
         university: "",
         course: "",
-        intake: "",   
+        intake: "",
         student: ""
  
     })

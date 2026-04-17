@@ -6,6 +6,14 @@ const Document = () => {
   const  [docs,setDocs] = useState([]);
   const {applicationId} = useParams();
    const navigate = useNavigate();
+  
+   const user = JSON.parse(localStorage.getItem("user"));
+   const role = user?.role?.toLowerCase();
+
+   if (!user) {
+  return <div>Please login again</div>;
+}
+
 
   useEffect(() => {
     fetchDocs();
@@ -33,6 +41,16 @@ console.log(error);
 alert('Not deleted!  ')
       }    
     }
+
+    const updateStatus = async (id, status) => {
+  try {
+    await API.put(`/documents/${id}/status`, { status });
+    fetchDocs();
+  } catch (error) {
+    console.log(error);
+  }
+};
+console.log("ROLE:", role);
     return (
     <div className="p-6 bg-gray-50 min-h-screen ">
 
@@ -42,13 +60,16 @@ alert('Not deleted!  ')
           Documents
         </h2>
 
-        <button
+        {(role === "student" || role === "counsellor") && (
+          <button
           onClick={() => navigate(`/add-document/${applicationId}`)}
           className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg shadow"
         >
           + Add Documents
         </button>
-      </div>
+      
+        )}
+        </div>
 
 
       {/* Table */}
@@ -75,52 +96,79 @@ alert('Not deleted!  ')
             ) : (
               docs.map((d, i) => (
                 <tr key={d._id} className="border-t text-center">
-                  <td className="p-3">{i + 1}</td>
-                  <td className="p-3">{d.name}</td>
-                  <td className="p-3">{d.type}</td>
-                  <td className="p-3">
-                        <span className={`px-2 py-1 rounded-full text-xs font-semibold
-                          ${d.status === "approved"
-                            ? "bg-green-100 text-green-600"
-                            : d.status === "rejected"
-                            ? "bg-red-100 text-red-600"
-                            : "bg-yellow-100 text-yellow-600"}
-                        `}>
-                          {d.status}
-                        </span>
-                      </td>
-                  <td className="p-3 flex justify-center gap-3">
+                        <td className="p-3">{i + 1}</td>
 
-                      {/*  Delete */}
-                      <button
-                        onClick={() => handleDelete(d._id)}
-                        className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-lg text-sm shadow"
-                      >
-                        Delete
-                      </button>
+                        <td className="p-3 font-medium">{d.name}</td>
 
-                      {/*  View */}
-                      <a
-                        href={`http://localhost:5000/${d.fileURL}`}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-lg text-sm shadow"
-                      >
-                        View
-                      </a>
+                        <td className="p-3 capitalize">{d.type}</td>
 
-                      {/* Download */}
-                      <a
-                        href={`http://localhost:5000/${d.fileURL}`}
-                        download
-                        className="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded-lg text-sm shadow"
-                      >
-                        Download
-                      </a>
+                        {/* STATUS BADGE */}
+                        <td className="p-3">
+                          <span
+                            className={`px-3 py-1 rounded-full text-xs font-semibold
+                              ${d.status === "approved"
+                                ? "bg-green-100 text-green-600"
+                                : d.status === "rejected"
+                                ? "bg-red-100 text-red-600"
+                                : "bg-yellow-100 text-yellow-600"}
+                            `}
+                          >
+                            {d.status}
+                          </span>
+                        </td>
 
-                    </td>
-                     </tr>
-              ))
+                        {/* ACTIONS */}
+                        <td className="p-3 flex flex-wrap justify-center gap-2">
+
+                          {/* Approve / Reject */}
+                          {(role === "admin" || role === "counsellor") && (
+                            <>
+                              <button
+                                onClick={() => updateStatus(d._id, "approved")}
+                                className="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded-lg text-xs shadow"
+                              >
+                                Approve
+                              </button>
+
+                              <button
+                                onClick={() => updateStatus(d._id, "rejected")}
+                                className="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded-lg text-xs shadow"
+                              >
+                                Reject
+                              </button>
+                            </>
+                          )}
+
+                          {/* Delete */}
+                          {(role === "admin" || role === "counsellor") && (
+  <button
+    onClick={() => handleDelete(d._id)}
+    className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-lg text-xs shadow"
+  >
+    Delete
+  </button>
+)}
+                          {/*  View */}
+                          <a
+                            href={`http://localhost:5000/${d.fileURL}`}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-lg text-xs shadow"
+                          >
+                            View
+                          </a>
+
+                          {/*  Download */}
+                          <a
+                            href={`http://localhost:5000/${d.fileURL}`}
+                            download
+                            className="bg-gray-700 hover:bg-gray-800 text-white px-3 py-1 rounded-lg text-xs shadow"
+                          >
+                            Download
+                          </a>
+
+                        </td>
+                      </tr>))
             )}
           </tbody>
         </table>

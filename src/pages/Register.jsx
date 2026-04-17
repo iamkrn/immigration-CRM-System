@@ -7,7 +7,7 @@ function Register() {
     name: "",
     email: "",
     password: "",
-    user_role: "Student"
+    role: "student"   
   });
 
   const navigate = useNavigate();
@@ -23,7 +23,6 @@ function Register() {
 
       alert(res.data.message);
 
-      //  redirect to login
       navigate("/login");
 
     } catch (err) {
@@ -33,8 +32,10 @@ function Register() {
 
   return (
     <div className="flex justify-center items-center h-screen bg-gray-100">
-      <form onSubmit={handleSubmit} className="bg-white p-6 rounded-xl shadow w-80 flex flex-col gap-3">
-        
+      <form
+        onSubmit={handleSubmit}
+        className="bg-white p-6 rounded-xl shadow w-80 flex flex-col gap-3"
+      >
         <h2 className="text-xl font-bold text-center">Register</h2>
 
         <input
@@ -59,16 +60,17 @@ function Register() {
           className="border p-2 rounded"
         />
 
+        
         <select
-          name="user_role"
-          onChange={handleChange}
-          className="border p-2 rounded"
-        >
-          <option>Admin</option>
-          <option>Counseller</option>
-          <option>Student</option>
-        </select>
-
+  name="role"
+  value={form.role}
+  onChange={handleChange}
+  className="border p-2 rounded"
+>
+  <option value="admin">Admin</option>
+  <option value="counsellor">Counsellor</option>
+  <option value="student">Student</option>
+</select>
         <button className="bg-green-500 text-white p-2 rounded">
           Register
         </button>
@@ -79,7 +81,6 @@ function Register() {
             Login
           </Link>
         </p>
-
       </form>
     </div>
   );
