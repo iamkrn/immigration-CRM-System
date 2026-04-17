@@ -57,3 +57,24 @@ exports.deleteDocument = async(req,res) => {
         res.status(500).json({message:error.message})
     }
 }
+
+exports.updateDocumentStatus = async(req,res) => {
+  try {
+    const {status} =  req.body;
+    const doc = await Document.findByIdAndUpdate(
+      req.params.id,
+      {status},
+    { returnDocument: 'after' }   
+  );
+  res.json({
+    success:true,
+    data:doc
+  })
+  
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      message:error.message,
+      success:false
+    })
+  }}

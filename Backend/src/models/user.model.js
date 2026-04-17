@@ -17,10 +17,10 @@ const userSchema = new mongoose.Schema({
         required:true,
 
      },
-     user_role:{
+     role:{
          type:String,
-         enum:['Student', 'Counsellor', 'Admin'],
-         default:'Student',
+         enum:['student', 'counsellor', 'admin'],
+         default:'student',
 
      },
      phone:{

@@ -7,21 +7,21 @@ const router = express.Router();
 
 
 //login user only
-router.get('/profile',authMiddleware,(req,res)=>{
+// 
+router.get('/profile', authMiddleware, (req, res) => {
   res.json({
-    user:req.user,
-    msg:"profile access denied"
-  })
-})
+    user: req.user,
+    msg: "Profile data"
+  });
+});
 
-// Admin  only 
-router.get('/admin',
-    authMiddleware,
-    roleMiddleware('Admin'),
-    (req,res)=>{
-        res.json({msg:"Admin only data"})
-    }
-)
-
-
+// admin only
+router.get(
+  '/admin',
+  authMiddleware,
+  roleMiddleware('admin'),
+  (req, res) => {
+    res.json({ msg: "Admin only data" });
+  }
+);
 module.exports = router

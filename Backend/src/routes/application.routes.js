@@ -8,13 +8,38 @@ const {createApplication,
        getApplicationById,
        updateApplication} = require('../controllers/application.controllers');
 
-const {authMiddleware} = require('../middlewares/auth.middleware')       
+const {authMiddleware} = require('../middlewares/auth.middleware') 
+const {roleMiddleware} = require('../middlewares/roles.middlewares')
 
-router.post('/',authMiddleware,createApplication);
-router.get('/',authMiddleware,getApplications);
-router.get('/:id',authMiddleware,getApplicationById);
-router.put('/:id',authMiddleware,updateApplication);
-router.delete('/:id',authMiddleware,deleteApplication);    
 
+// CREATE
+router.post(
+  '/',
+  authMiddleware,
+  roleMiddleware('admin', 'counsellor'),
+  createApplication
+);
+
+// GET ALL
+router.get('/', authMiddleware, getApplications);
+
+// GET ONE
+router.get('/:id', authMiddleware, getApplicationById);
+
+// UPDATE
+router.put(
+  '/:id',
+  authMiddleware,
+  roleMiddleware('admin', 'counsellor'),
+  updateApplication
+);
+
+// DELETE (admin only)
+router.delete(
+  '/:id',
+  authMiddleware,
+  roleMiddleware('admin'),
+  deleteApplication
+);
 module.exports = router
 
