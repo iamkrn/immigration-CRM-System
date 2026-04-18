@@ -6,6 +6,8 @@ const userRoutes = require('./routes/user.routes')
 const studentRoutes = require('./routes/student.routes')
 const applicationRoutes = require('./routes/application.routes')
 const documentRoutes = require('./routes/document.routes')
+const dashboardRoutes = require('./routes/dashboard.routes');
+
 
 app.use(cors());
 
@@ -17,5 +19,6 @@ app.use('/api/students',studentRoutes)
 app.use('/api/applications',applicationRoutes)
 app.use('/api/documents',documentRoutes)
 app.use('/uploads',express.static('uploads'))
+app.use('/api/dashboard', dashboardRoutes);
 
 module.exports = app;
