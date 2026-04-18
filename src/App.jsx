@@ -6,6 +6,7 @@ import Customer from "./pages/Customer";
 import Application from "./pages/Application";
 import Document from "./pages/Document";
 import Profile from "./pages/Profile";
+import Students from "./pages/Students";
 
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -62,6 +63,8 @@ const App = () => {
           <Route path="/documents/:applicationId" element={<Document />} />
           <Route path="add-document/:applicationId" element={<AddDocument />} />
           <Route path="profile" element={<Profile />} />
+
+            <Route path="/students" element={<Students />} />
         </Route>
 
       </Routes>
