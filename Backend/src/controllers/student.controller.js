@@ -1,60 +1,58 @@
 const { json } = require('express');
 const Student = require('../models/student.model');
 
-//Create a student
-exports.createStudent = async(req,res)=>{
-try {
-    const {firstName,
-           lastName,
-           email,
-           phone,
-           dob,
-           age,
-           fatherName,
-           motherName,
-           address,
-           city,
-           pincode,
-           country,
-           state,
-           preferredCountry,
-           qualification,
-        leadStatus} = req.body
+const calculateProfileCompletion = (student) => {
+  let score = 0;
 
-    if(!firstName  || !email){
-        return res.status(400).json({
-            message:'please required field',
-            success:false
-        })
+  if (student.firstName && student.email) score += 20;
+  if (student.qualification) score += 20;
+  if (student.preferredCountry) score += 20;
+  if (student.ieltsScore || student.toeflScore || student.pteScore) score += 20;
+  if (student.address && student.city) score += 20;
+
+  return score;
+};
+
+//Create a student
+exports.createStudent = async (req, res) => {
+  try {
+    const { firstName, email } = req.body;
+
+    if (!firstName || !email) {
+      return res.status(400).json({
+        message: "Required fields missing",
+        success: false
+      });
     }
 
-    const exist = await Student.findOne({email})
-    if(exist){
-        return res.status(400).json({
-            message:'student already exist',
-            success:false
-        })
-        }
+    const exist = await Student.findOne({ email });
+    if (exist) {
+      return res.status(400).json({
+        message: "Student already exists",
+        success: false
+      });
+    }
 
-        const student = new Student(req.body)
-        await student.save()
+    const studentData = req.body;
 
-        res.status(200).json({
-            message:"sudent create succefully",
-            data:student,
-            success:true
-                })
-} catch (error) {
-            console.log(error);
-        res.status(500).json({
-            success: false,
-            message: error.message
-        });
+    // profile completion
+    studentData.profileCompletion = calculateProfileCompletion(studentData);
 
-}    
+    const student = new Student(studentData);
+    await student.save();
 
-}
+    res.status(201).json({
+      success: true,
+      data: student
+    });
 
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message
+    });
+  }
+};
 //Get all Students
 exports.getStudents = async (req, res) => {
   try {
@@ -93,27 +91,31 @@ exports.getStudentById = async(req,res)=>{
 
 
 //Update Student
-exports.updateStudent = async(req,res) => {
-    try {
-        const student = await Student.findByIdAndUpdate(
-            req.params.id,
-            req.body,
-         { returnDocument: 'after' }        
-         )
+exports.updateStudent = async (req, res) => {
+  try {
+    const updatedData = req.body;
 
-        res.json({
-            success:true,
-            data : student,
-        })
-    } catch (error) {
-        console.log(error),
-        res.status(500).json({
-            success:false,
-            message:error.message
-        })
-        
-    }
-}
+    //  recalculate profile completion
+    updatedData.profileCompletion = calculateProfileCompletion(updatedData);
+
+    const student = await Student.findByIdAndUpdate(
+      req.params.id,
+      updatedData,
+      { new: true }
+    );
+
+    res.json({
+      success: true,
+      data: student
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message
+    });
+  }
+};
 
 //Delete Student
 exports.deleteStudent = async(req,res) => {

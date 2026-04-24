@@ -2,28 +2,15 @@ const mongoose = require("mongoose");
 
 const applicationSchema = new mongoose.Schema({
 
-  // 🔗 Student reference
   student: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Student",
     required: true
   },
 
-  // Application details
-  country: {
-    type: String,
-    required: true
-  },
-
-  university: {
-    type: String,
-    required: true
-  },
-
-  course: {
-    type: String,
-    required: true
-  },
+  country: { type: String, required: true },
+  university: { type: String, required: true },
+  course: { type: String, required: true },
 
   intake: {
     type: String,
@@ -31,23 +18,37 @@ const applicationSchema = new mongoose.Schema({
     required: true
   },
 
-  // Status tracking
+  //  ADVANCED STATUS FLOW
   status: {
     type: String,
-    enum: ["draft", "submitted", "approved", "rejected"],
+    enum: [
+      "draft",
+      "documents_pending",
+      "submitted",
+      "under_review",
+      "offer_received",
+      "accepted",
+      "rejected",
+      "visa_processing",
+      "visa_approved",
+      "visa_rejected"
+    ],
     default: "draft"
   },
 
-  // Extra notes (Counsellor/Admin use)
-  remarks: {
-    type: String
-  },
+  //  Documents linked
+  documents: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Document"
+  }],
+  
 
-  // Timeline
-  appliedDate: {
-    type: Date,
-    default: Date.now
-  }
+  //  Timeline
+  appliedDate: Date,
+  decisionDate: Date,
+
+  //  Notes
+  remarks: String,
 
 }, { timestamps: true });
 
