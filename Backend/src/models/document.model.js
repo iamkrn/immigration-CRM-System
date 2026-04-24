@@ -1,46 +1,41 @@
-const mongoose = require("mongoose");
+const mongoose  = require('mongoose');
 
 const documentSchema = new mongoose.Schema({
-  application: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Application",
-    required: true
-  },
+   application:{
+    type:mongoose.Schema.Types.ObjectId,
+    ref:'Application',
+    required:true
+   },
 
-  student: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Student"
-  },
+   type:{
+    type:String,
+    enum:[
+        "sop",
+        "lor",
+        "passport",
+        "financial",
+        "academics",
+        "other"
 
-  type: {
-    type: String,
-    enum: [
-      "passport",
-      "sop",
-      "lor",
-      "financial",
-      "academics",
-      "resume",
-      "other"
     ],
-    required: true
-  },
+    required:true
+   },
 
-  name: String,
+   name:String,
 
-  fileURL: {
-    type: String,
-    required: true
-  },
+   fileURL:String,
+    
+   status:{
+    type:String,
+    enum:['approved','pending', 'rejected'],
+    default:"pending"
+   }
 
-  status: {
-    type: String,
-    enum: ["pending", "verified", "rejected"],
-    default: "pending"
-  },
 
-  remarks: String
 
-}, { timestamps: true });
 
-module.exports = mongoose.model("Document", documentSchema);
+
+},{timestamps:true});
+
+
+module.exports = mongoose.model('Document',documentSchema)

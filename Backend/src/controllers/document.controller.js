@@ -1,41 +1,80 @@
 const Document = require('../models/document.model');
-const Application = require('../models/application.model');
 
+
+//create the documents
 exports.createDocument = async (req, res) => {
   try {
-    const { name, type, application } = req.body;
+    console.log("BODY:", req.body);
+    console.log("FILE:", req.file);
 
-    if (!name || !type || !application || !req.file) {
-      return res.status(400).json({
-        success: false,
-        message: "All fields required"
-      });
-    }
-
-    const doc = new Document({
-      name,
-      type,
-      application,
-      fileURL: req.file.path
+    const docs = new Document({
+      name: req.body.name,
+      type: req.body.type,
+      application: req.body.application,
+      fileURL: req.file ? req.file.path : ""
     });
 
-    await doc.save();
-
-    //  LINK TO APPLICATION
-    await Application.findByIdAndUpdate(application, {
-      $push: { documents: doc._id }
-    });
+    await docs.save();
 
     res.json({
       success: true,
-      data: doc
+      data: docs
     });
 
   } catch (error) {
-    console.log(error);
-    res.status(500).json({
-      success: false,
-      message: error.message
-    });
+    console.log("ERROR:", error);
+    res.status(500).json({ message: error.message });
   }
 };
+//get all documents
+exports.getDocument = async(req,res) => {
+    try {
+        const docs = await Document.find({application:req.params.applicationId})
+        res.json({
+         success:true,
+         data:docs
+        })
+     
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({message:error.message})
+    }
+}
+
+//delete Document
+exports.deleteDocument = async(req,res) => {
+    try {
+      const docs =  await Document.findByIdAndDelete(req.params.id);
+        res.json({
+         data:docs,
+         success:true,
+         message:"Document Deleted"
+        })
+     
+        
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({message:error.message})
+    }
+}
+
+exports.updateDocumentStatus = async(req,res) => {
+  try {
+    const {status} =  req.body;
+    const doc = await Document.findByIdAndUpdate(
+      req.params.id,
+      {status},
+    { returnDocument: 'after' }   
+  );
+  res.json({
+    success:true,
+    data:doc
+  })
+  
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      message:error.message,
+      success:false
+    })
+  }}
