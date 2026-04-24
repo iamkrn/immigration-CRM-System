@@ -7,25 +7,27 @@ const EditCustomer = () => {
   const navigate = useNavigate();
 
   const [form, setForm] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    phone: "",
-    dob: "",
-    age: "",
-    fatherName: "",
-    motherName: "",
-    address: "",
-    city: "",
-    state: "",
-    pincode: "",
-    country: "",
-    qualification: "",
-    preferredCountry: "",
-    leadStatus:"new"
-  });
-
-  // ✅ correct useEffect
+  firstName: "",
+  lastName: "",
+  email: "",
+  phone: "",
+  whatsapp: "",
+  dob: "",
+  nationality: "",
+  currentLocation: "",
+  fatherName: "",
+  motherName: "",
+  address: "",
+  city: "",
+  state: "",
+  pincode: "",
+  country: "",
+  qualification: "",
+  preferredCountry: "",
+  leadStatus: "new",
+  source: "website"
+});
+  //  correct useEffect
   useEffect(() => {
     fetchStudent();
   }, []);

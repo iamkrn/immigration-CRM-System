@@ -107,19 +107,27 @@ const Application = () => {
                   {/* Status Badge */}
                   <td className="p-3">
                     <span
-                      className={`px-2 py-1 rounded-full text-xs font-medium ${
-                        a.status === "approved"
-                          ? "bg-green-100 text-green-600"
-                          : a.status === "rejected"
-                          ? "bg-red-100 text-red-600"
-                          : a.status === "submitted"
-                          ? "bg-blue-100 text-blue-600"
-                          : "bg-gray-100 text-gray-600"
-                      }`}
-                    >
-                      {a.status}
-                    </span>
-                  </td>
+  className={`px-2 py-1 rounded-full text-xs font-medium ${
+    a.status === "offer_received" || a.status === "accepted" || a.status === "visa_approved"
+      ? "bg-green-100 text-green-600"
+
+      : a.status === "rejected" || a.status === "visa_rejected"
+      ? "bg-red-100 text-red-600"
+
+      : a.status === "submitted" || a.status === "under_review"
+      ? "bg-blue-100 text-blue-600"
+
+      : a.status === "documents_pending"
+      ? "bg-yellow-100 text-yellow-600"
+
+      : a.status === "visa_processing"
+      ? "bg-purple-100 text-purple-600"
+
+      : "bg-gray-100 text-gray-600"
+  }`}
+>
+  {a.status.replaceAll("_", " ")}
+</span></td>
 
                   {/* Actions */}
                   <td className="p-3 flex justify-center gap-2">

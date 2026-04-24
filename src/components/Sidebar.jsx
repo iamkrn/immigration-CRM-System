@@ -36,6 +36,12 @@ const Sidebar = () => {
             👥 Students
           </NavLink>
         )}
+        {(role === "counsellor") && (
+          <NavLink to="/add-customer" className={menuClass}>
+            👥 Add-Students
+          </NavLink>
+        )}
+
 
         {/* Profile (all users) */}
         <NavLink to="/profile" className={menuClass}>
