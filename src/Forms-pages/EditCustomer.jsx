@@ -8,25 +8,23 @@ const EditCustomer = () => {
 
   const [form, setForm] = useState({
   firstName: "",
-  lastName: "",
-  email: "",
-  phone: "",
-  whatsapp: "",
-  dob: "",
-  nationality: "",
-  currentLocation: "",
-  fatherName: "",
-  motherName: "",
-  address: "",
-  city: "",
-  state: "",
-  pincode: "",
-  country: "",
-  qualification: "",
-  preferredCountry: "",
-  leadStatus: "new",
-  source: "website"
-});
+    lastName: "",
+    email: "",
+    phone: "",
+    dob: "",
+    age: "",
+    fatherName: "",
+    motherName: "",
+    address: "",
+    city: "",
+    state: "",
+    pinCode: "", 
+    country: "",
+    preferredCountry: "",
+    qualification: "",
+    leadStatus: "cold" ,
+    isActive:"true"
+  });
   //  correct useEffect
   useEffect(() => {
     fetchStudent();
@@ -140,6 +138,20 @@ const EditCustomer = () => {
             <option value="cold">Cold</option>
 
         </select>
+
+        <h2 className="text-lg font-semibold mb-3 text-gray-600">IsActive</h2>
+
+            <select
+              name="isActive"
+              value={form.isActive}
+              onChange={handleChange}
+              className="input w-full"
+            >
+              <option value='true'>True</option>
+              <option value='false'>False</option>
+            </select>
+          
+
       
 
           {/* 🔘 Buttons */}

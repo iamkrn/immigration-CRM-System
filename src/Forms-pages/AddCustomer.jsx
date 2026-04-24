@@ -21,7 +21,8 @@ const AddCustomer = () => {
     country: "",
     preferredCountry: "",
     qualification: "",
-    leadStatus: "cold" 
+    leadStatus: "cold" ,
+    isActive:"true"
   });
 
   const handleChange = (e) => {
@@ -133,6 +134,19 @@ const AddCustomer = () => {
               <option value="cold">Cold</option>
               <option value="warm">Warm</option>
               <option value="hot">Hot</option>
+            </select>
+          </div>
+<div>
+            <h2 className="text-lg font-semibold mb-3 text-gray-600">IsActive</h2>
+
+            <select
+              name="isActive"
+              value={form.isActive}
+              onChange={handleChange}
+              className="input w-full"
+            >
+              <option value='true'>True</option>
+              <option value='false'>False</option>
             </select>
           </div>
 

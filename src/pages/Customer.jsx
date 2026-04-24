@@ -16,6 +16,12 @@ function Customers() {
   useEffect(() => {
     fetchStudents();
   }, []);
+  const user = JSON.parse(localStorage.getItem("user")) || {};
+
+const canEdit = ["admin", "counsellor"].includes(user.role);
+const canDelete = user.role === "admin";
+const role = user?.role;
+
 
   const fetchStudents = async () => {
     try {
@@ -43,17 +49,40 @@ function Customers() {
 
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
+       <div className="grid grid-cols-3 gap-4 mb-6">
+        <div className="bg-white p-4 rounded-xl shadow">
+          <h3 className="text-gray-500 text-sm">Total Students</h3>
+          <p className="text-2xl font-bold">{students.length}</p>
+        </div>
+
+        <div className="bg-white p-4 rounded-xl shadow">
+          <h3 className="text-gray-500 text-sm">Active</h3>
+          <p className="text-2xl font-bold text-green-600">
+            {students.filter(s => s.isActive).length}
+          </p>
+        </div>
+
+        <div className="bg-white p-4 rounded-xl shadow">
+          <h3 className="text-gray-500 text-sm">Inactive</h3>
+          <p className="text-2xl font-bold text-red-500">
+            {students.filter(s => !s.isActive).length}
+          </p>
+        </div>
+      </div>
+
 
       {/* Header */}
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-3xl font-bold text-gray-700">Customers</h2>
 
-        <button
+        {role === 'counsellor' && (<button
           onClick={() => navigate("/add-customer")}
           className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg shadow"
         >
           + Add Customer
         </button>
+)}
+        
       </div>
 
       {/* Table */}
@@ -108,20 +137,22 @@ function Customers() {
                         </span></td>
 
                   <td className="p-3 flex justify-center gap-2">
-                    <button
+                     {canEdit && 
+                     (<button
                       onClick={() => handleEdit(s._id)}
                       className="bg-yellow-400 hover:bg-yellow-500 text-white px-3 py-1 rounded-md"
                     >
                       Edit
                     </button>
 
-                    <button
+                     )}
+                    {canDelete && (<button
                       onClick={() => handleDelete(s._id)}
                       className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-md"
                     >
                       Delete
                     </button>
-                  </td>
+                  )}</td>
                 </tr>
               ))
             )}

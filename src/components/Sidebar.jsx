@@ -32,16 +32,11 @@ const Sidebar = () => {
 
         {/* Only Admin + Counsellor */}
         {(role === "admin" || role === "counsellor") && (
-          <NavLink to="/students" className={menuClass}>
-            👥 Students
+          <NavLink to="/customers" className={menuClass}>
+            👥 Customers
           </NavLink>
         )}
-        {(role === "counsellor") && (
-          <NavLink to="/add-customer" className={menuClass}>
-            👥 Add-Students
-          </NavLink>
-        )}
-
+        
 
         {/* Profile (all users) */}
         <NavLink to="/profile" className={menuClass}>

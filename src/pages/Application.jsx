@@ -36,6 +36,16 @@ const Application = () => {
     }
   }
 
+  //role based logic 
+
+    const user = JSON.parse(localStorage.getItem("user")) || {};
+
+  const canEdit = ["admin", "counsellor"].includes(user.role);
+const canDelete = user.role === "admin";
+const canAdd  = ["admin", "counsellor"].includes(user.role)
+const role = user?.role;
+
+
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
 
@@ -45,13 +55,15 @@ const Application = () => {
           Applications
         </h2>
 
-        <button
+        {canAdd && (
+          <button
           onClick={() => navigate("/add-application")}
           className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg shadow"
         >
           + Add Application
         </button>
-      </div>
+      
+        )}</div>
 
       {/* Table */}
       <div className="bg-white rounded-xl shadow overflow-hidden">
@@ -131,19 +143,24 @@ const Application = () => {
 
                   {/* Actions */}
                   <td className="p-3 flex justify-center gap-2">
-                    <button
+                    {canEdit && (
+                      <button
                       onClick={() => navigate(`/edit-application/${a._id}`)}
                       className="bg-yellow-400 hover:bg-yellow-500 text-white px-3 py-1 rounded-md cursor-pointer"
                     >
                       Edit
                     </button>
 
-                    <button
+                    )}
+                    {canDelete && (
+                      <button
                       onClick={() => handleDelete(a._id)}
                       className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-md cursor-pointer"
                     >
                       Delete
                     </button>
+                    
+                    )}
                     <button
                       onClick={() => navigate(`/documents/${a._id}`)}
                       className="bg-indigo-500 hover:bg-indigo-600 text-white px-3 py-1 rounded cursor-pointer"
