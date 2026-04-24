@@ -48,12 +48,12 @@ const Dashboard = () => {
   }
 
   return (
-    <div className={`min-h-screen transition-colors duration-300 ${isDarkMode ? "bg-gray-900" : "bg-gradient-to-br from-gray-50 to-gray-100"}`}>
+    <div className={`min-h-screen transition-colors duration-300 ${isDarkMode ? "bg-gray-900" : "bg-linear-to-br from-gray-50 to-gray-100"}`}>
       {/* Header */}
       <div className={`${isDarkMode ? "bg-gray-800 border-gray-700" : "bg-white"} border-b ${isDarkMode ? "border-gray-700" : "border-gray-200"} sticky top-0 z-10`}>
         <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
           <div>
-            <h1 className={`text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent`}>
+            <h1 className={`text-4xl font-bold bg-linear-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent`}>
               Welcome {user?.name}! 👋
             </h1>
             <p className={`mt-1 ${isDarkMode ? "text-gray-400" : "text-gray-600"}`}>
@@ -172,7 +172,7 @@ const Card = ({ title, value, icon, gradient, isDark }) => {
         isDark ? "bg-gray-800" : "bg-white"
       }`}
     >
-      <div className={`bg-gradient-to-br ${gradient} p-6 text-white relative overflow-hidden`}>
+      <div className={`bg-linear-to-br ${gradient} p-6 text-white relative overflow-hidden`}>
         <div className="absolute -right-8 -top-8 w-32 h-32 bg-white opacity-10 rounded-full"></div>
         <div className="flex justify-between items-start relative z-10">
           <div>
