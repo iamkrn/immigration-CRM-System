@@ -19,7 +19,9 @@ try {
            state,
            preferredCountry,
            qualification,
-        leadStatus} = req.body
+        leadStatus,
+        isActive
+    } = req.body
 
     if(!firstName  || !email){
         return res.status(400).json({

@@ -38,7 +38,7 @@ router.put(
 router.delete(
   '/:id',
   authMiddleware,
-  roleMiddleware('admin'),
+  roleMiddleware('admin', 'counsellor'),
   deleteApplication
 );
 module.exports = router

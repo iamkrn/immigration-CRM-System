@@ -9,6 +9,13 @@ const applicationSchema = new mongoose.Schema({
     required: true
   },
 
+  //  NEW FIELD (IMPORTANT)
+  createdBy: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    
+  },
+
   // Application details
   country: {
     type: String,
@@ -38,7 +45,7 @@ const applicationSchema = new mongoose.Schema({
     default: "draft"
   },
 
-  // Extra notes (Counsellor/Admin use)
+  // Extra notes
   remarks: {
     type: String
   },

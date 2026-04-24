@@ -38,6 +38,15 @@ const studentSchema = new mongoose.Schema({
     default:'new'
    },
 
+   isActive: {
+  type: Boolean,
+  default: true
+},
+assignedTo: {
+  type: mongoose.Schema.Types.ObjectId,
+  ref: "User"
+},
+
    //future
    ieltsScore:String,
    passport:String,

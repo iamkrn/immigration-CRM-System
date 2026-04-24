@@ -34,7 +34,7 @@ router.put(
   updateStudent
 );
 
-// DELETE (admin only 🔥)
+// DELETE (admin only )
 router.delete(
   '/:id',
   authMiddleware,
