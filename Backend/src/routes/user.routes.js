@@ -1,27 +1,98 @@
-const express  = require('express');
-
-const {authMiddleware} = require('../middlewares/auth.middleware');
-const {roleMiddleware} = require('../middlewares/roles.middlewares')
-
+const express = require('express');
 const router = express.Router();
 
+const { authMiddleware } = require('../middlewares/auth.middleware');
+const { roleMiddleware } = require('../middlewares/roles.middlewares');
 
-//login user only
-// 
+ // PROFILE (All Logged-in Users)
+
 router.get('/profile', authMiddleware, (req, res) => {
-  res.json({
-    user: req.user,
-    msg: "Profile data"
-  });
+  try {
+    if (!req.user) {
+      return res.status(401).json({
+        success: false,
+        message: "Unauthorized"
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Profile fetched successfully",
+      user: req.user
+    });
+
+  } catch (error) {
+    console.log("PROFILE ERROR:", error.message);
+    res.status(500).json({
+      success: false,
+      message: "Server Error"
+    });
+  }
 });
 
-// admin only
+
+
+//  ADMIN ONLY
+
 router.get(
   '/admin',
   authMiddleware,
   roleMiddleware('admin'),
   (req, res) => {
-    res.json({ msg: "Admin only data" });
+    try {
+      res.status(200).json({
+        success: true,
+        message: "Admin access granted",
+        data: {
+          user: req.user
+        }
+      });
+    } catch (error) {
+      console.log("ADMIN ERROR:", error.message);
+      res.status(500).json({
+        success: false,
+        message: "Server Error"
+      });
+    }
   }
 );
-module.exports = router
+
+
+
+//  COUNSELLOR ONLY (optional add)
+
+router.get(
+  '/counsellor',
+  authMiddleware,
+  roleMiddleware('counsellor', 'admin'),
+  (req, res) => {
+    res.status(200).json({
+      success: true,
+      message: "Counsellor access granted",
+      data: {
+        user: req.user
+      }
+    });
+  }
+);
+
+
+
+//  STUDENT ONLY (optional add)
+
+router.get(
+  '/student',
+  authMiddleware,
+  roleMiddleware('student'),
+  (req, res) => {
+    res.status(200).json({
+      success: true,
+      message: "Student access granted",
+      data: {
+        user: req.user
+      }
+    });
+  }
+);
+
+module.exports = router;
