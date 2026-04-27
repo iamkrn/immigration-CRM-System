@@ -2,62 +2,67 @@ const { json } = require('express');
 const Student = require('../models/student.model');
 
 //Create a student
-exports.createStudent = async(req,res)=>{
-try {
-    const {firstName,
-           lastName,
-           email,
-           phone,
-           dob,
-           age,
-           fatherName,
-           motherName,
-           address,
-           city,
-           pincode,
-           country,
-           state,
-           preferredCountry,
-           qualification,
-        leadStatus,
-        isActive
-    } = req.body
+exports.createStudent = async (req, res) => {
+  try {
+    const {
+      firstName,
+      lastName,
+      email,
+      phone,
+      dob,
+      age,
+      fatherName,
+      motherName,
+      address,
+      city,
+      pincode,
+      country,
+      state,
+      preferredCountry,
+      qualification,
+      leadStatus,
+      isActive
+    } = req.body;
 
-    if(!firstName  || !email){
-        return res.status(400).json({
-            message:'please required field',
-            success:false
-        })
+    // ✅ Required validation
+    if (!firstName || !email) {
+      return res.status(400).json({
+        message: "Please fill required fields",
+        success: false
+      });
     }
 
-    const exist = await Student.findOne({email})
-    if(exist){
-        return res.status(400).json({
-            message:'student already exist',
-            success:false
-        })
-        }
+    // ✅ Check duplicate
+    const exist = await Student.findOne({ email });
+    if (exist) {
+      return res.status(400).json({
+        message: "Student already exists",
+        success: false
+      });
+    }
 
-        const student = new Student(req.body)
-        await student.save()
+    // 🔥 MAIN FIX (USER LINK)
+    const student = new Student({
+      ...req.body,
+      user: req.user._id   // ⭐ IMPORTANT LINE
+    });
 
-        res.status(200).json({
-            message:"sudent create succefully",
-            data:student,
-            success:true
-                })
-} catch (error) {
-            console.log(error);
-        res.status(500).json({
-            success: false,
-            message: error.message
-        });
+    await student.save();
 
-        
-}    
+    res.status(200).json({
+      message: "Student created successfully",
+      data: student,
+      success: true
+    });
 
-}
-
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      message: error.message
+    });
+  }
+};
 //Get all Students
 exports.getStudents = async (req, res) => {
   try {

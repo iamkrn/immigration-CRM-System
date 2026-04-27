@@ -5,7 +5,6 @@ const jwt = require('jsonwebtoken')
 exports.registerUser = async (req, res) => {
   try {
     const { name, email, password, role } = req.body;
-    console.log("BODY:", req.body);
 
     const userExist = await User.findOne({ email });
 
@@ -15,7 +14,6 @@ exports.registerUser = async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    //  SAFE ROLE HANDLE
     const finalRole = role ? role.toLowerCase() : "student";
 
     const user = await User.create({
@@ -24,6 +22,14 @@ exports.registerUser = async (req, res) => {
       password: hashedPassword,
       role: finalRole
     });
+
+    //AUTO CREATE STUDENT (ONLY FOR STUDENT ROLE)
+    if (finalRole === "student") {
+      await Student.create({
+        firstName: name,
+        email: email
+      });
+    }
 
     res.status(200).json({
       user,
@@ -35,6 +41,7 @@ exports.registerUser = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
 exports.LoginUser = async(req,res) =>{
     try{
         const {email, password} = req.body

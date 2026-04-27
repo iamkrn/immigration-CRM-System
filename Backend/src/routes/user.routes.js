@@ -3,33 +3,35 @@ const router = express.Router();
 
 const { authMiddleware } = require('../middlewares/auth.middleware');
 const { roleMiddleware } = require('../middlewares/roles.middlewares');
+const Student = require('../models/student.model')
 
  // PROFILE (All Logged-in Users)
 
-router.get('/profile', authMiddleware, (req, res) => {
+router.get('/profile', authMiddleware, async (req, res) => {
   try {
-    if (!req.user) {
-      return res.status(401).json({
-        success: false,
-        message: "Unauthorized"
-      });
+    let userData = { ...req.user._doc };
+
+    if (req.user.role === "student") {
+      const student = await Student.findOne({ user: req.user._id });
+
+      if (student) {
+        userData = {
+          ...userData,
+          studentData: student
+        };
+      }
     }
 
     res.status(200).json({
       success: true,
-      message: "Profile fetched successfully",
-      user: req.user
+      user: userData
     });
 
   } catch (error) {
-    console.log("PROFILE ERROR:", error.message);
-    res.status(500).json({
-      success: false,
-      message: "Server Error"
-    });
+    console.log(error);
+    res.status(500).json({ message: "Server Error" });
   }
 });
-
 
 
 //  ADMIN ONLY
@@ -84,15 +86,20 @@ router.get(
   '/student',
   authMiddleware,
   roleMiddleware('student'),
-  (req, res) => {
-    res.status(200).json({
-      success: true,
-      message: "Student access granted",
-      data: {
-        user: req.user
-      }
-    });
+  async(req, res) => {
+
+   // instead of direct req.user
+  const student = await require('../models/student.model')
+  .findOne({ email: req.user.email });
+
+   res.json({
+  success: true,
+  user: {
+    ...req.user._doc,
+    ...(student ? student._doc : {})
   }
+});
+    }
 );
 
 module.exports = router;
