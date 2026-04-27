@@ -36,6 +36,11 @@ const userSchema = new mongoose.Schema({
   isActive: {
     type: Boolean,
     default: true
+  },
+
+  student: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Student"
   }
 
 }, { timestamps: true });
