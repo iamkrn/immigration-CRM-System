@@ -22,7 +22,12 @@ exports.authMiddleware = (req, res, next) => {
     const decoded = jwt.verify(token, process.env.SECRET_KEY);
 
     //  Attach user
-    req.user = decoded;
+    const user =  await  User.findById(decoded.id).select("-password");
+
+    if(!user){
+      return res.status(404).json({message: "User not found"})
+    }
+    req.user = user
 
     next();
 
