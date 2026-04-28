@@ -3,7 +3,9 @@ import API from "../services/API";
 import { useNavigate, useOutletContext } from "react-router-dom";
 
 function Customers() {
-  const {search =""} = useOutletContext();
+
+const context = useOutletContext();
+const search = context?.search || "";
   const navigate = useNavigate();
   const [students, setStudents] = useState([]);
 
@@ -18,8 +20,8 @@ function Customers() {
   }, []);
   const user = JSON.parse(localStorage.getItem("user")) || {};
 
-const canEdit = ["admin", "counsellor"].includes(user.role);
-const canDelete = user.role === "admin";
+const canEdit = ["admin", "counsellor", "superAdmin"].includes(user.role);
+const canDelete = ["admin", "superAdmin"].includes(user.role);
 const role = user?.role;
 
 
@@ -75,13 +77,14 @@ const role = user?.role;
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-3xl font-bold text-gray-700">Customers</h2>
 
-        {role === 'counsellor' && (<button
-          onClick={() => navigate("/add-customer")}
-          className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg shadow"
-        >
-          + Add Customer
-        </button>
-)}
+        {["counsellor", "admin", "superAdmin"].includes(role) && (
+            <button
+              onClick={() => navigate("/add-customer")}
+              className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg shadow"
+            >
+              + Add Customer
+            </button>
+          )}
         
       </div>
 

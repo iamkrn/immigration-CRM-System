@@ -47,7 +47,11 @@ const App = () => {
         >
           <Route path="dashboard" element={<AdminDashboard />} />
           <Route path="users" element={<AdminUsers />} />
-        </Route>
+          <Route path="students" element={<Students />} />
+          <Route path="customers" element={<Customer />} />
+          <Route path="applications" element={<Application />} />
+          <Route path="profile" element={<Profile />} />
+          </Route>
 
         {/* MAIN ROUTES — Student + Counsellor */}
         <Route

@@ -35,8 +35,19 @@ const AdminLayout = () => {
           <NavLink to="/admin/users" className={menuClass}>
             👥 Manage Users
           </NavLink>
+          <NavLink to="/admin/students" className={menuClass}>
+            🎓 Students
+          </NavLink>
+          <NavLink to="/admin/customers" className={menuClass}>
+            👥 Customers
+          </NavLink>
+          <NavLink to="/admin/applications" className={menuClass}>
+            📄 Applications
+          </NavLink>
+          <NavLink to="/admin/profile" className={menuClass}>
+            👤 Profile
+          </NavLink>
         </nav>
-
         {/* Bottom */}
         <div className="p-4 border-t border-gray-700">
           <p className="text-xs text-gray-400 mb-3 text-center">

@@ -40,8 +40,8 @@ const Application = () => {
 
     const user = JSON.parse(localStorage.getItem("user")) || {};
 
-  const canEdit = ["admin", "counsellor"].includes(user.role);
-const canDelete = user.role === "admin";
+const canEdit = ["admin", "counsellor", "superAdmin"].includes(user.role);
+const canDelete = ["admin", "superAdmin"].includes(user.role);
 const canAdd  = ["admin", "counsellor"].includes(user.role)
 const role = user?.role;
 
