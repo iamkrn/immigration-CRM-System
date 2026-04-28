@@ -1,6 +1,7 @@
 const User = require('../models/user.model')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
+const Student = require('../models/student.model')
 
 exports.registerUser = async (req, res) => {
   try {
@@ -27,7 +28,8 @@ exports.registerUser = async (req, res) => {
     if (finalRole === "student") {
       await Student.create({
         firstName: name,
-        email: email
+        email: email,
+        user:user._id
       });
     }
 
