@@ -17,6 +17,7 @@ import EditCustomer from "./Forms-pages/EditCustomer";
 import AddApplication from "./Forms-pages/AddApplication";
 import EditApplication from "./Forms-pages/EditApplication";
 import AddDocument from "./Forms-pages/AddDocument";
+import RoleRoute from "./components/RoleRoute";
 const App = () => {
   return (
     <BrowserRouter>
@@ -51,15 +52,45 @@ const App = () => {
           }
         >
           <Route index element={<Dashboard />} />
-          <Route path="customers" element={<Customer />} />
-          <Route path="add-customer" element={<AddCustomer/>}/>
-          <Route path="/edit-customer/:id" element={<EditCustomer/>}/>
-          <Route path="applications" element={<Application />} />
-          <Route path="/add-application" element={<AddApplication />} />
-          <Route path="/edit-application/:id" element={<EditApplication/>}/>
           
+          
+          {/* only Admin + Counsellor */}
+                  <Route
+                    path="customers"
+                    element={
+                      <RoleRoute allowedRoles={["admin", "counsellor"]}>
+                        <Customer />
+                      </RoleRoute>
+                    }
+                  />
+                  <Route
+                    path="/add-customer"
+                    element={
+                      <RoleRoute allowedRoles={["admin", "counsellor"]}>
+                        <AddCustomer />
+                      </RoleRoute>
+                    }
+                  />
+                  <Route
+                    path="/edit-customer/:id"
+                    element={
+                      <RoleRoute allowedRoles={["admin", "counsellor"]}>
+                        <EditCustomer />
+                      </RoleRoute>
+                    }
+                  />
 
+                  {/* only Admin */}
+                  <Route
+                    path="/edit-application/:id"
+                    element={
+                      <RoleRoute allowedRoles={["admin", "counsellor"]}>
+                        <EditApplication />
+                      </RoleRoute>
+                    }
+                  />
 
+          <Route path="applications" element={<Application />} />
           <Route path="/documents/:applicationId" element={<Document />} />
           <Route path="add-document/:applicationId" element={<AddDocument />} />
           <Route path="profile" element={<Profile />} />

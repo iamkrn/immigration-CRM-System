@@ -50,29 +50,32 @@ const Dashboard = () => {
   return (
     <div className={`min-h-screen transition-colors duration-300 ${isDarkMode ? "bg-gray-900" : "bg-linear-to-br from-gray-50 to-gray-100"}`}>
       {/* Header */}
-      <div className={`${isDarkMode ? "bg-gray-800 border-gray-700" : "bg-white"} border-b ${isDarkMode ? "border-gray-700" : "border-gray-200"} sticky top-0 z-10`}>
-        <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-          <div>
-            <h1 className={`text-4xl font-bold bg-linear-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent`}>
-              Welcome {user?.name}! 👋
-            </h1>
-            <p className={`mt-1 ${isDarkMode ? "text-gray-400" : "text-gray-600"}`}>
-              Role: <span className={`font-semibold ${isDarkMode ? "text-blue-400" : "text-blue-600"}`}>{role.charAt(0).toUpperCase() + role.slice(1)}</span>
-            </p>
-          </div>
-          <button
-            onClick={toggleTheme}
-            className={`p-3 rounded-lg transition-all duration-300 text-2xl ${isDarkMode ? "bg-gray-700 hover:bg-gray-600" : "bg-gray-200 hover:bg-gray-300"}`}
-            title={isDarkMode ? "Switch to Light Mode" : "Switch to Dark Mode"}
-          >
-            {isDarkMode ? "☀️" : "🌙"}
-          </button>
-        </div>
-      </div>
-
+      
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-6 py-8">
-        {/* Stats Cards */}
+        {/* Welcome + Dark Mode Toggle */}
+          <div className="flex justify-between items-center mb-8">
+            <div>
+              <h1 className={`text-2xl font-bold ${isDarkMode ? "text-white" : "text-gray-800"}`}>
+                Welcome back, {user?.name}! 👋
+              </h1>
+              <p className={`text-sm mt-1 ${isDarkMode ? "text-gray-400" : "text-gray-500"}`}>
+                Role: <span className="font-semibold text-blue-500 capitalize">{role}</span>
+              </p>
+            </div>
+
+            <button
+              onClick={toggleTheme}
+              className={`p-3 rounded-lg text-xl transition-all ${
+                isDarkMode
+                  ? "bg-gray-700 hover:bg-gray-600"
+                  : "bg-white hover:bg-gray-100 shadow"
+              }`}
+            >
+              {isDarkMode ? "☀️" : "🌙"}
+            </button>
+          </div>
+                  {/* Stats Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mb-8">
           {/* Admin */}
           {role === "admin" && (

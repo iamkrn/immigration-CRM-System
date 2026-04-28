@@ -1,8 +1,14 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 const Sidebar = () => {
   const user = JSON.parse(localStorage.getItem("user"));
   const role = user?.role;
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.clear();
+    navigate("/login");
+  };
 
   const menuClass = ({ isActive }) =>
     `flex items-center gap-3 px-4 py-2 rounded-lg transition-all duration-200 text-sm ${
@@ -22,33 +28,48 @@ const Sidebar = () => {
       {/* Menu */}
       <nav className="flex flex-col gap-2 p-4 flex-1">
 
-        <NavLink to="/" className={menuClass}>
+        {/* All  */}
+        <NavLink to="/" end className={menuClass}>
           🏠 Dashboard
         </NavLink>
 
-        <NavLink to="/applications" className={menuClass}>
-          📄 Applications
-        </NavLink>
-
-        {/* Only Admin + Counsellor */}
+        {/* only Admin + Counsellor */}
         {(role === "admin" || role === "counsellor") && (
-          <NavLink to="/customers" className={menuClass}>
-            👥 Customers
+          <>
+            <NavLink to="/customers" className={menuClass}>
+              👥 Customers
+            </NavLink>
+
+            <NavLink to="/applications" className={menuClass}>
+              📄 Applications
+            </NavLink>
+          </>
+        )}
+
+        {/* onlyStudent */}
+        {role === "student" && (
+          <NavLink to="/applications" className={menuClass}>
+            📄 My Applications
           </NavLink>
         )}
-        
 
-        {/* Profile (all users) */}
+        {/* Sab ko */}
         <NavLink to="/profile" className={menuClass}>
           👤 Profile
         </NavLink>
 
       </nav>
 
-      {/* Footer */}
-      <div className="p-4 border-t border-gray-700 text-xs text-gray-400 text-center">
-        © 2026 CRM System
+      {/* Logout bottom mein */}
+      <div className="p-4 border-t border-gray-700">
+        <button
+          onClick={handleLogout}
+          className="w-full bg-red-500 hover:bg-red-600 text-white py-2 rounded-lg text-sm font-semibold transition"
+        >
+          🚪 Logout
+        </button>
       </div>
+
     </div>
   );
 };

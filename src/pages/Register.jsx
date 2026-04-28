@@ -61,16 +61,7 @@ function Register() {
         />
 
         
-        <select
-  name="role"
-  value={form.role}
-  onChange={handleChange}
-  className="border p-2 rounded"
->
-  <option value="admin">Admin</option>
-  <option value="counsellor">Counsellor</option>
-  <option value="student">Student</option>
-</select>
+        
         <button className="bg-green-500 text-white p-2 rounded">
           Register
         </button>
