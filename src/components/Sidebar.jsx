@@ -34,7 +34,7 @@ const Sidebar = () => {
         </NavLink>
 
         {/* only Admin + Counsellor */}
-        {(role === "admin" || role === "counsellor") && (
+        {(role === "admin" || role === "counsellor" || role === "superAdmin") && (
           <>
             <NavLink to="/customers" className={menuClass}>
               👥 Customers

@@ -20,12 +20,18 @@ function Login() {
   try {
     const res = await API.post("/auth/login", form);
 
-localStorage.setItem("token", res.data.token);
-localStorage.setItem("user", JSON.stringify(res.data.user)); 
+      localStorage.setItem("token", res.data.token);
+      localStorage.setItem("user", JSON.stringify(res.data.user));
 
-alert("Login Success");
-navigate("/");
+      const role = res.data.user.role;
 
+      if (role === "admin" || role === "superAdmin") {
+        navigate("/admin/dashboard");
+      } else if (role === "counsellor") {
+        navigate("/");
+      } else {
+        navigate("/");
+      }
 
   } catch (err) {
     console.log(err);
