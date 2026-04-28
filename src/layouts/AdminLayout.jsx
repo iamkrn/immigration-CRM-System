@@ -40,7 +40,7 @@ const AdminLayout = () => {
         {/* Bottom */}
         <div className="p-4 border-t border-gray-700">
           <p className="text-xs text-gray-400 mb-3 text-center">
-            {user?.name} — Admin
+            {user?.name} — {user?.role}
           </p>
           <button
             onClick={handleLogout}
