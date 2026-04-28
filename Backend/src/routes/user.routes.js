@@ -158,4 +158,47 @@ router.put('/profile', authMiddleware, async (req, res) => {
   }
 });
 
+// GET - Sab users (Admin ke liye)
+router.get('/all-users', authMiddleware, async (req, res) => {
+  try {
+    const users = await User.find({ role: { $ne: 'student' } }).select('-password');
+    res.status(200).json({ success: true, users });
+  } catch (error) {
+    res.status(500).json({ message: "Server Error" });
+  }
+});
+
+// POST - Naya user create (Admin ke liye)
+router.post('/create-user', authMiddleware, async (req, res) => {
+  try {
+    const { name, email, password, role } = req.body;
+    const bcrypt = require('bcrypt');
+
+    const exists = await User.findOne({ email });
+    if (exists) {
+      return res.status(400).json({ message: "Email already exists" });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const user = await User.create({ name, email, password: hashedPassword, role });
+
+    res.status(201).json({ success: true, user });
+  } catch (error) {
+    res.status(500).json({ message: "Server Error" });
+  }
+});
+
+// PUT - Active/Inactive toggle
+router.put('/toggle/:id', authMiddleware, async (req, res) => {
+  try {
+    const { isActive } = req.body;
+    await User.findByIdAndUpdate(req.params.id, { isActive });
+    res.status(200).json({ success: true, message: "Updated!" });
+  } catch (error) {
+    res.status(500).json({ message: "Server Error" });
+  }
+});
+
+module.exports = router;
+
 module.exports = router;
