@@ -102,4 +102,58 @@ router.get(
     }
 );
 
+// PUT /api/user/profile  → Profile update karna
+router.put('/profile', authMiddleware, async (req, res) => {
+  try {
+    const { name, phone } = req.body;
+
+    // Update an User
+    await User.findByIdAndUpdate(req.user._id, { name, phone });
+
+    // id student have then also change the student data
+    if (req.user.role === 'student') {
+      const {
+        preferredCountry,
+        qualification,
+        city,
+        state,
+        country,
+        fatherName,
+        motherName,
+        dob,
+        WhatsApp,
+        address,
+        pinCode
+      } = req.body;
+
+      await Student.findOneAndUpdate(
+        { user: req.user._id },
+        {
+          preferredCountry,
+          qualification,
+          city,
+          state,
+          country,
+          fatherName,
+          motherName,
+          dob,
+          WhatsApp,
+          address,
+          pinCode,
+          phone
+        }
+      );
+    }
+
+    res.status(200).json({
+      success: true,
+      message: 'Profile updated successfully'
+    });
+
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: 'Server Error' });
+  }
+});
+
 module.exports = router;
