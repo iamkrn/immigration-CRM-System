@@ -14,7 +14,13 @@ const EditApplication = () => {
   });
 
   const { id } = useParams();
+
   const navigate = useNavigate();
+    const user = JSON.parse(localStorage.getItem("user"));
+    const appsRoute = ["admin", "superAdmin"].includes(user?.role) 
+      ? "/admin/applications" 
+      : "/applications";
+
   const [students, setStudents] = useState([]);
   const [loading, setLoading] = useState(false);
   const [fetchingData, setFetchingData] = useState(true);
@@ -44,7 +50,7 @@ const EditApplication = () => {
       setLoading(true);
       await API.put(`/applications/${id}`, form);
       alert("Application updated");
-      navigate("/applications");
+      navigate(appsRoute);
     } catch (error) {
       console.log(error.response?.data || error.message);
       alert(error.response?.data?.message || "Update failed");
@@ -78,10 +84,12 @@ const EditApplication = () => {
         status: res.data.data.status || "draft"
       });
 
-    } catch (error) {
-      alert("Failed to load application");
-      navigate("/applications");
-    } finally {
+    }  catch (error) {
+  console.log("Error:", error.response?.data);
+  alert(error.response?.data?.message || "Failed to load application");
+
+    }
+    finally {
       setFetchingData(false);
     }
   };
@@ -187,7 +195,7 @@ const EditApplication = () => {
             </div>
           </div>
 
-          {/* 🔥 FIXED STATUS */}
+          {/*  FIXED STATUS */}
           <div>
             <h2 className="text-lg font-semibold mb-3 text-gray-600">
               Status

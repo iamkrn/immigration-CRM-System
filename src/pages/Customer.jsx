@@ -97,13 +97,16 @@ const role = user?.role;
               <th className="p-3">Email</th>
               <th className="p-3">Phone</th>
               <th className="p-3">Status</th>
-              <th className="p-3">Actions</th></tr>
+              <th className="p-3">SKU</th>
+              <th className="p-3">Profile</th>
+              <th className="p-3">Actions</th>
+              </tr>
           </thead>
 
           <tbody>
             {students.length === 0 ? (
               <tr>
-                <td colSpan="6" className="text-center p-6 text-gray-400">
+                <td colSpan="8" className="text-center p-6 text-gray-400">
                   No Customers Found 😕
                 </td>
               </tr>
@@ -139,6 +142,46 @@ const role = user?.role;
                           {s.leadStatus || "new"}
                         </span></td>
 
+                        {/* SKU */}
+                  <td className="p-3">
+                    <span className={`px-2 py-1 rounded-full text-xs font-semibold ${
+                      s.sku === "superPremium"
+                        ? "bg-yellow-100 text-yellow-600"
+                        : s.sku === "premium"
+                        ? "bg-purple-100 text-purple-600"
+                        : s.sku === "value+"
+                        ? "bg-blue-100 text-blue-600"
+                        : "bg-gray-100 text-gray-500"
+                    }`}>
+                      {s.sku === "superPremium" ? "💎 Super Premium"
+                        : s.sku === "premium" ? "⭐ Premium"
+                        : s.sku === "value+" ? "✅ Value+"
+                        : "🔵 Alliance"}
+                    </span>
+                  </td>
+
+                  {/* Profile Completion */}
+                  <td className="p-3">
+                    <div className="flex items-center gap-2 justify-center">
+                      <div className="w-24 bg-gray-200 rounded-full h-2">
+                        <div
+                          className={`h-2 rounded-full ${
+                            s.profileCompletion >= 80
+                              ? "bg-green-500"
+                              : s.profileCompletion >= 50
+                              ? "bg-yellow-500"
+                              : "bg-red-400"
+                          }`}
+                          style={{ width: `${s.profileCompletion || 0}%` }}
+                        />
+                      </div>
+                      <span className="text-xs text-gray-500 font-semibold">
+                        {s.profileCompletion || 0}%
+                      </span>
+                    </div>
+                  </td>
+                   
+                   {/**delete or edit */}
                   <td className="p-3 flex justify-center gap-2">
                      {canEdit && 
                      (<button

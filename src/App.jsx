@@ -34,7 +34,7 @@ const App = () => {
         <Route path="/login" element={<PublicRoute><Login /></PublicRoute>} />
         <Route path="/register" element={<PublicRoute><Register /></PublicRoute>} />
 
-        {/* ADMIN ROUTES — MainLayout se alag */}
+        {/* ADMIN ROUTES */}
         <Route
           path="/admin"
           element={
@@ -51,6 +51,9 @@ const App = () => {
           <Route path="customers" element={<Customer />} />
           <Route path="applications" element={<Application />} />
           <Route path="profile" element={<Profile />} />
+          <Route path="add-application" element={<AddApplication />} />
+          <Route path="edit-application/:id" element={<EditApplication />} />
+
           </Route>
 
         {/* MAIN ROUTES — Student + Counsellor */}
@@ -85,14 +88,18 @@ const App = () => {
               <EditCustomer />
             </RoleRoute>
           } />
-          <Route path="/edit-application/:id" element={
-            <RoleRoute allowedRoles={["admin", "counsellor"]}>
-              <EditApplication />
-            </RoleRoute>
-          } />
-        </Route>
+          <Route path="/add-application" element={
+              <RoleRoute allowedRoles={["admin", "counsellor"]}>
+                <AddApplication />
+              </RoleRoute>
+            } />
+            <Route path="/edit-application/:id" element={
+              <RoleRoute allowedRoles={["admin", "counsellor"]}>
+                <EditApplication />
+              </RoleRoute>
+            } /></Route>
 
-      </Routes>
+                  </Routes>
     </BrowserRouter>
   );
 };

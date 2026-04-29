@@ -21,7 +21,8 @@ const AddCustomer = () => {
     country: "",
     preferredCountry: "",
     qualification: "",
-    leadStatus: "cold" ,
+    leadStatus: "cold",
+    sku:'alliance',
     isActive:"true"
   });
 
@@ -136,7 +137,47 @@ const AddCustomer = () => {
               <option value="hot">Hot</option>
             </select>
           </div>
-<div>
+
+          {/* SKU */}
+                  <div>
+                    <h2 className="text-lg font-semibold mb-3 text-gray-600">
+                      SKU Category
+                    </h2>
+                    <select
+                      name="sku"
+                      value={form.sku}
+                      onChange={handleChange}
+                      className="input w-full"
+                    >
+                      <option value="alliance">Alliance — Basic</option>
+                      <option value="value+">Value+ — Standard</option>
+                      <option value="premium">Premium — Priority</option>
+                      <option value="superPremium">Super Premium — VIP 💎</option>
+                    </select>
+
+                    {/* SKU Description */}
+                    <div className="mt-3 grid grid-cols-2 md:grid-cols-4 gap-2">
+                      <div className="bg-gray-50 rounded-lg p-2 text-center text-xs">
+                        <p className="font-bold text-gray-500">Alliance</p>
+                        <p className="text-gray-400">48hr response</p>
+                      </div>
+                      <div className="bg-blue-50 rounded-lg p-2 text-center text-xs">
+                        <p className="font-bold text-blue-500">Value+</p>
+                        <p className="text-gray-400">24hr response</p>
+                      </div>
+                      <div className="bg-purple-50 rounded-lg p-2 text-center text-xs">
+                        <p className="font-bold text-purple-500">Premium</p>
+                        <p className="text-gray-400">8hr response</p>
+                      </div>
+                      <div className="bg-yellow-50 rounded-lg p-2 text-center text-xs">
+                        <p className="font-bold text-yellow-500">Super Premium 💎</p>
+                        <p className="text-gray-400">4hr response</p>
+                      </div>
+                    </div>
+                  </div>
+
+          {/**isActive  */}
+            <div>
             <h2 className="text-lg font-semibold mb-3 text-gray-600">IsActive</h2>
 
             <select

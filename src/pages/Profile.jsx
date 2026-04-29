@@ -7,13 +7,11 @@ function Profile() {
   const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({});
 
-  // Profile fetch karo
   const fetchProfile = () => {
     API.get("/user/profile")
       .then(res => {
         const u = res.data.user;
         setUser(u);
-        // Enter the Default values in the form
         setForm({
           name: u.name || "",
           phone: u.phone || "",
@@ -32,21 +30,17 @@ function Profile() {
       .catch(err => console.log(err));
   };
 
-  useEffect(() => {
-    fetchProfile();
-  }, []);
+  useEffect(() => { fetchProfile(); }, []);
 
-  // Input change handle karo
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  // Save 
   const handleSave = async () => {
     setLoading(true);
     try {
       await API.put("/user/profile", form);
-      await fetchProfile(); // bring the update data
+      await fetchProfile();
       setEditMode(false);
     } catch (err) {
       console.log(err);
@@ -66,24 +60,19 @@ function Profile() {
   }
 
   return (
-    <div className="min-h-screen bg-linear-to-br from-gray-50 to-gray-100 p-6 flex justify-center items-start">
+    <div className="min-h-screen bg-gray-50 p-6 flex justify-center items-start">
       <div className="w-full max-w-4xl bg-white rounded-2xl shadow-xl p-8">
 
         {/* HEADER */}
         <div className="flex items-center justify-between border-b pb-6 mb-6">
           <div>
             <h1 className="text-3xl font-bold text-gray-800">My Profile 👤</h1>
-            <p className="text-gray-500 text-sm mt-1">
-              Manage your personal information
-            </p>
+            <p className="text-gray-500 text-sm mt-1">Manage your personal information</p>
           </div>
-
           <div className="flex items-center gap-3">
             <div className="px-4 py-2 bg-blue-100 text-blue-600 rounded-lg text-sm font-semibold capitalize">
               {user.role}
             </div>
-
-            {/* Edit / Cancel Button */}
             {!editMode ? (
               <button
                 onClick={() => setEditMode(true)}
@@ -125,6 +114,44 @@ function Profile() {
               Student Details
             </h2>
 
+            {/* PROFILE COMPLETION BAR */}
+            <div className="bg-gray-50 rounded-xl p-4 mb-6 border">
+              <div className="flex justify-between items-center mb-2">
+                <p className="text-sm font-semibold text-gray-600">
+                  Profile Completion
+                </p>
+                <p className={`text-sm font-bold ${
+                  user.studentData?.profileCompletion >= 80
+                    ? "text-green-600"
+                    : user.studentData?.profileCompletion >= 50
+                    ? "text-yellow-600"
+                    : "text-red-500"
+                }`}>
+                  {user.studentData?.profileCompletion || 0}%
+                </p>
+              </div>
+              <div className="w-full bg-gray-200 rounded-full h-3">
+                <div
+                  className={`h-3 rounded-full transition-all duration-500 ${
+                    user.studentData?.profileCompletion >= 80
+                      ? "bg-green-500"
+                      : user.studentData?.profileCompletion >= 50
+                      ? "bg-yellow-500"
+                      : "bg-red-400"
+                  }`}
+                  style={{ width: `${user.studentData?.profileCompletion || 0}%` }}
+                />
+              </div>
+              <p className="text-xs text-gray-400 mt-2">
+                {user.studentData?.profileCompletion >= 80
+                  ? "✅ Profile almost complete!"
+                  : user.studentData?.profileCompletion >= 50
+                  ? "⚠️ Keep filling your profile"
+                  : "❌ Please complete your profile"}
+              </p>
+            </div>
+
+            {/* FIELDS */}
             {editMode ? (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <Field label="Preferred Country" name="preferredCountry" value={form.preferredCountry} onChange={handleChange} />
@@ -165,8 +192,8 @@ function Profile() {
           </div>
         )}
 
-        {/* ADMIN */}
-        {user.role === "admin" && (
+        {/* ADMIN / SUPERADMIN */}
+        {(user.role === "admin" || user.role === "superAdmin") && (
           <div className="mt-8 border-t pt-6">
             <h2 className="text-xl font-semibold text-gray-700 mb-4">
               Admin Panel Access
@@ -193,7 +220,6 @@ function Profile() {
   );
 }
 
-/* VIEW MODE */
 const Info = ({ label, value }) => (
   <div className="bg-gray-50 p-4 rounded-lg border">
     <p className="text-sm text-gray-500">{label}</p>
@@ -201,7 +227,6 @@ const Info = ({ label, value }) => (
   </div>
 );
 
-/* EDIT MODE */
 const Field = ({ label, name, value, onChange, type = "text" }) => (
   <div className="flex flex-col gap-1">
     <label className="text-sm text-gray-500 font-medium">{label}</label>

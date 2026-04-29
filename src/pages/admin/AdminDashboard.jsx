@@ -169,7 +169,7 @@ const AdminDashboard = () => {
 // Card Component
 const Card = ({ title, value, icon, gradient }) => (
   <div className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl hover:scale-105 transition-all duration-300">
-    <div className={`bg-gradient-to-br ${gradient} p-6 text-white`}>
+    <div className={`bg-linear-to-br ${gradient} p-6 text-white`}>
       <div className="flex justify-between items-start">
         <div>
           <p className="text-sm opacity-90 mb-2">{title}</p>

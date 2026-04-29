@@ -58,14 +58,17 @@ const Students = () => {
               <th className="p-3 text-left">Phone</th>
               <th className="p-3 text-left">Country</th>
               <th className="p-3 text-left">Lead Status</th>
+              <th className="p-3 text-left">SKU</th>
               <th className="p-3 text-left">Status</th>
+              <th className="p-3 text-left">Profile</th>
+
             </tr>
           </thead>
 
           <tbody>
             {students.length === 0 ? (
               <tr>
-                <td colSpan="7" className="text-center p-8 text-gray-400">
+                <td colSpan="8" className="text-center p-8 text-gray-400">
                   No Students Found 😕
                 </td>
               </tr>
@@ -111,6 +114,44 @@ const Students = () => {
                     </span>
                   </td>
 
+                  {/* SKU */}
+                <td className="p-3">
+                  <span className={`px-2 py-1 rounded-full text-xs font-semibold ${
+                    s.sku === "superPremium"
+                      ? "bg-yellow-100 text-yellow-600"
+                      : s.sku === "premium"
+                      ? "bg-purple-100 text-purple-600"
+                      : s.sku === "value+"
+                      ? "bg-blue-100 text-blue-600"
+                      : "bg-gray-100 text-gray-500"
+                  }`}>
+                    {s.sku === "superPremium" ? "💎 Super Premium"
+                      : s.sku === "premium" ? "⭐ Premium"
+                      : s.sku === "value+" ? "✅ Value+"
+                      : "🔵 Alliance"}
+                  </span>
+                </td>
+                    {/**profile completion */}
+                  <td className="p-3">
+                      <div className="flex items-center gap-2">
+                        <div className="w-24 bg-gray-200 rounded-full h-2">
+                          <div
+                            className={`h-2 rounded-full ${
+                              s.profileCompletion >= 80
+                                ? "bg-green-500"
+                                : s.profileCompletion >= 50
+                                ? "bg-yellow-500"
+                                : "bg-red-400"
+                            }`}
+                            style={{ width: `${s.profileCompletion || 0}%` }}
+                          />
+                        </div>
+                        <span className="text-xs text-gray-500 font-semibold">
+                          {s.profileCompletion || 0}%
+                        </span>
+                      </div>
+                    </td>
+
                   {/* Active Status */}
                   <td className="p-3">
                     <span className={`px-2 py-1 rounded-full text-xs font-semibold ${
@@ -121,6 +162,8 @@ const Students = () => {
                       {s.isActive ? "Active" : "Inactive"}
                     </span>
                   </td>
+
+                  
 
                 </tr>
               ))
