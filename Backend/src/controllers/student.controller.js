@@ -1,6 +1,42 @@
 const { json } = require('express');
 const Student = require('../models/student.model');
 
+// Profile Completion Calculator
+const calculateProfileCompletion = (student) => {
+  let score = 0;
+
+  // Basic Info → 20%
+  if (student.firstName) score += 5;
+  if (student.lastName) score += 5;
+  if (student.phone) score += 5;
+  if (student.dob) score += 5;
+
+  // Academic Info → 25%
+  if (student.education) score += 10;
+  if (student.qualification) score += 10;
+  if (student.passingYear) score += 5;
+
+  // University Preferences → 15%
+  if (student.preferredCountry) score += 8;
+  if (student.intakeYear) score += 7;
+
+  // Documents → 20%
+  if (student.passport) score += 7;
+  if (student.sop) score += 7;
+  if (student.lor) score += 6;
+
+  // Financial Info → 10%
+  if (student.fatherName) score += 5;
+  if (student.motherName) score += 5;
+
+  // Visa Info → 10%
+  if (student.visaType) score += 5;
+  if (student.ieltsScore) score += 5;
+
+  return score;
+};
+
+
 //Create a student
 exports.createStudent = async (req, res) => {
   try {
@@ -24,7 +60,7 @@ exports.createStudent = async (req, res) => {
       isActive
     } = req.body;
 
-    // ✅ Required validation
+    //  Required validation
     if (!firstName || !email) {
       return res.status(400).json({
         message: "Please fill required fields",
@@ -32,7 +68,7 @@ exports.createStudent = async (req, res) => {
       });
     }
 
-    // ✅ Check duplicate
+    //  Check duplicate
     const exist = await Student.findOne({ email });
     if (exist) {
       return res.status(400).json({
@@ -40,12 +76,17 @@ exports.createStudent = async (req, res) => {
         success: false
       });
     }
+    
+    const completion = calculateProfileCompletion(req.body);
 
-    // 🔥 MAIN FIX (USER LINK)
+    //create Student
     const student = new Student({
       ...req.body,
-      user: req.user._id   // ⭐ IMPORTANT LINE
+      user: req.user._id ,
+      profileCompletion:completion  
     });
+
+
 
     await student.save();
 
@@ -103,6 +144,9 @@ exports.getStudentById = async(req,res)=>{
 //Update Student
 exports.updateStudent = async(req,res) => {
     try {
+        const completion = calculateProfileCompletion(req.body);
+        req.body.profileCompletion = completion;
+
         const student = await Student.findByIdAndUpdate(
             req.params.id,
             req.body,
@@ -141,3 +185,4 @@ exports.deleteStudent = async(req,res) => {
         
     }
 }
+

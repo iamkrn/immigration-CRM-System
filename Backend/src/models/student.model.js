@@ -34,8 +34,19 @@ const studentSchema = new mongoose.Schema({
     //CRM
     leadStatus:{
     type:String,
-    enum:['hot','cold', 'warm'],
+    enum:['hot','cold', 'warm','new'],
     default:'new'
+   },
+
+   sku:{
+    type:String,
+    enum:['superPremium','value+','premium','alliance'],
+    default:'alliance'
+   },
+
+   profileCompletion:{
+    type:Number,
+    default:0
    },
 
    isActive: {
