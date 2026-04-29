@@ -29,10 +29,15 @@ exports.getApplications = async (req, res) => {
   try {
     let query = {};
 
-    // counsellor → sirf apna data
+    // counsellor only
     if (req.user.role === "counsellor") {
       query.createdBy = req.user.id;
     }
+  //student only
+    if (req.user.role === "student") {
+  query.student = req.user._id;
+   }
+
 
     const apps = await Application
       .find(query)
@@ -69,15 +74,31 @@ exports.getApplicationById = async (req, res) => {
     }
 
     // counsellor → only own access
-    if (
-      req.user.role === "counsellor" &&
-      app.createdBy.toString() !== req.user.id
-    ) {
-      return res.status(403).json({
-        success: false,
-        message: "Not allowed"
-      });
-    }
+      if (
+        req.user.role === "counsellor" &&
+        app.createdBy?._id 
+          ? app.createdBy._id.toString() !== req.user.id
+          : app.createdBy?.toString() !== req.user.id
+      ) {
+        return res.status(403).json({
+          success: false,
+          message: "Not allowed"
+        });
+      }  
+      //student only own access
+         if (req.user.role === "student") {
+          // after populate it have only one object
+          const studentId = app.student?._id 
+            ? app.student._id.toString() 
+            : app.student?.toString();
+            
+          if (studentId !== req.user._id.toString()) {
+            return res.status(403).json({
+              success: false,
+              message: "Not allowed"
+            });
+          }
+        }
 
     res.json({
       success: true,
@@ -107,19 +128,20 @@ exports.updateApplication = async (req, res) => {
 
     // counsellor → only own update
     if (
-      req.user.role === "counsellor" &&
-      app.createdBy.toString() !== req.user.id
-    ) {
-      return res.status(403).json({
-        success: false,
-        message: "Not allowed"
-      });
-    }
-
+          req.user.role === "counsellor" &&
+          app.createdBy?._id 
+            ? app.createdBy._id.toString() !== req.user.id
+            : app.createdBy?.toString() !== req.user.id
+        ) {
+          return res.status(403).json({
+            success: false,
+            message: "Not allowed"
+          });
+        }
     const updated = await Application.findByIdAndUpdate(
       req.params.id,
       req.body,
-      { new: true }
+      {returnDocument:  'after' }
     );
 
     res.json({
@@ -136,7 +158,7 @@ exports.updateApplication = async (req, res) => {
   }
 };
 
-//  DELETE (main fix)
+//  DELETE 
 exports.deleteApplication = async (req, res) => {
   try {
     const app = await Application.findById(req.params.id);
