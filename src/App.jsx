@@ -74,17 +74,17 @@ const App = () => {
 
           {/* Admin + Counsellor only */}
           <Route path="customers" element={
-            <RoleRoute allowedRoles={["admin", "counsellor"]}>
+            <RoleRoute allowedRoles={["admin", "counsellor", "superAdmin"]}>
               <Customer />
             </RoleRoute>
           } />
           <Route path="/add-customer" element={
-            <RoleRoute allowedRoles={["admin", "counsellor"]}>
+            <RoleRoute allowedRoles={["admin", "counsellor", "superAdmin"]}>
               <AddCustomer />
             </RoleRoute>
           } />
           <Route path="/edit-customer/:id" element={
-            <RoleRoute allowedRoles={["admin", "counsellor"]}>
+            <RoleRoute allowedRoles={["admin", "counsellor", "superAdmin"]}>
               <EditCustomer />
             </RoleRoute>
           } />

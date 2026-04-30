@@ -60,7 +60,7 @@ function Profile() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6 flex justify-center items-start">
+<div className="min-h-screen p-6 flex justify-center items-start" style={{ background: "#f8fafc" }}>
       <div className="w-full max-w-4xl bg-white rounded-2xl shadow-xl p-8">
 
         {/* HEADER */}
