@@ -30,7 +30,7 @@ router.get('/:id', authMiddleware, getStudentById);
 router.put(
   '/:id',
   authMiddleware,
-  roleMiddleware('admin', 'counsellor'),
+  roleMiddleware('admin', 'counsellor','superAdmin'),
   updateStudent
 );
 
@@ -38,7 +38,7 @@ router.put(
 router.delete(
   '/:id',
   authMiddleware,
-  roleMiddleware('admin'),
+  roleMiddleware('admin','superAdmin'),
   deleteStudent
 );
 module.exports = router;
