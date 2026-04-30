@@ -17,8 +17,8 @@ const MainLayout = () => {
         
         <Sidebar />
 
-        <div className="flex-1 p-4 overflow-y-auto bg-gray-100">
-          <Outlet context={{search}} />
+         <div className="flex-1 overflow-y-auto" style={{ background: "#f8fafc" }}>
+            <Outlet context={{search}} />
         </div>
 
       </div>
