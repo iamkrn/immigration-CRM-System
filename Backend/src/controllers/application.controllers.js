@@ -129,9 +129,7 @@ exports.updateApplication = async (req, res) => {
     // counsellor → only own update
     if (
           req.user.role === "counsellor" &&
-          app.createdBy?._id 
-            ? app.createdBy._id.toString() !== req.user.id
-            : app.createdBy?.toString() !== req.user.id
+           app.createdBy?.toString() !== req.user.id
         ) {
           return res.status(403).json({
             success: false,
