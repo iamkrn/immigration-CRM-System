@@ -60,7 +60,7 @@ exports.LoginUser = async(req,res) =>{
         //Token
 
     const token = await jwt.sign({id:user._id, role: user.role },
-        process.env.SECRET_KEY, {expiresIn:'2d'})
+        process.env.SECRET_KEY, {expiresIn:'1d'})
         //token Done!
 
         res.status(200).json({
