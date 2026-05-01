@@ -13,10 +13,10 @@ const AdminUsers = () => {
     name: "", email: "", password: "", role: "counsellor"
   });
 
-  // ✅ FIX 1
+
   const currentUserRole = JSON.parse(localStorage.getItem("user"))?.role;
 
-  // ✅ FIX 2
+
   const roleOptions = currentUserRole === "superAdmin"
     ? [
         { value: "counsellor", label: "Counsellor" },
@@ -138,7 +138,7 @@ const AdminUsers = () => {
                   className="px-4 py-2.5 rounded-xl text-sm text-gray-800 outline-none"
                   style={{ border: "1px solid #e2e8f0", background: "#f8fafc" }}
                 >
-                  {/* ✅ FIX 3: () use kiya, hardcoded option hataya */}
+                  {/*  FIX 3: () , hardcoded option remove */}
                   {roleOptions.map((opt) => (
                     <option key={opt.value} value={opt.value}>{opt.label}</option>
                   ))}
@@ -205,7 +205,7 @@ const AdminUsers = () => {
 
                   <td className="p-4">
                     <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold text-white flex-shrink-0"
+                      <div className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold text-white shrink-0"
                         style={{ background: "linear-gradient(135deg, #3b82f6, #6366f1)" }}>
                         {u.name?.charAt(0).toUpperCase()}
                       </div>
