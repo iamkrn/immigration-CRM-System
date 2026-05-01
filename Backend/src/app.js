@@ -7,6 +7,8 @@ const studentRoutes = require('./routes/student.routes')
 const applicationRoutes = require('./routes/application.routes')
 const documentRoutes = require('./routes/document.routes')
 const dashboardRoutes = require('./routes/dashboard.routes');
+const chatRoutes = require('./routes/chating-routes/chat.routes')
+const messageRoutes = require('./routes/chating-routes/message.routes')
 
 
 app.use(cors());
@@ -20,5 +22,7 @@ app.use('/api/applications',applicationRoutes)
 app.use('/api/documents',documentRoutes)
 app.use('/uploads',express.static('uploads'))
 app.use('/api/dashboard', dashboardRoutes);
+app.use('/api/chat',chatRoutes),
+app.use('/api/message',messageRoutes)
 
 module.exports = app;
