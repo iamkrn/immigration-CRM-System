@@ -158,7 +158,7 @@ router.put('/profile', authMiddleware, async (req, res) => {
   }
 });
 
-// GET - Sab users (Admin ke liye)
+// GET -all users (Admin ke liye)
 router.get('/all-users', authMiddleware, async (req, res) => {
   try {
     const users = await User.find({ role: { $ne: 'student' } }).select('-password');
@@ -168,10 +168,13 @@ router.get('/all-users', authMiddleware, async (req, res) => {
   }
 });
 
-// POST - Naya user create (Admin ke liye)
-router.post('/create-user', authMiddleware, async (req, res) => {
+// POST - new create (for Admin )
+router.post('/create-user', authMiddleware,roleMiddleware('admin','superAdmin') ,async (req, res) => {
   try {
     const { name, email, password, role } = req.body;
+
+    if(role === "superAdmin" && req.user.role !== "superAdmin")
+      return res.status(403).json({message:"only superAdmin can create another superAdmin"})
     const bcrypt = require('bcrypt');
 
     const exists = await User.findOne({ email });
