@@ -13,6 +13,20 @@ const AdminUsers = () => {
     name: "", email: "", password: "", role: "counsellor"
   });
 
+  // ✅ FIX 1
+  const currentUserRole = JSON.parse(localStorage.getItem("user"))?.role;
+
+  // ✅ FIX 2
+  const roleOptions = currentUserRole === "superAdmin"
+    ? [
+        { value: "counsellor", label: "Counsellor" },
+        { value: "admin", label: "Admin" },
+        { value: "superAdmin", label: "Super Admin" },
+      ]
+    : [
+        { value: "counsellor", label: "Counsellor" },
+      ];
+
   useEffect(() => { fetchUsers(); }, []);
 
   const fetchUsers = async () => {
@@ -59,27 +73,18 @@ const AdminUsers = () => {
   return (
     <div className="p-6 min-h-screen" style={{ background: "#f8fafc" }}>
 
-      {/* Header */}
       <div className="flex justify-between items-center mb-6">
         <div>
-          <p className="text-sm font-semibold mb-1" style={{ color: "#3b82f6" }}>
-            USER MANAGEMENT
-          </p>
-          <h1 className="text-2xl font-black text-gray-900" style={{ letterSpacing: "-0.5px" }}>
-            Manage Users
-          </h1>
-          <p className="text-sm text-gray-500 mt-1">
-            Create and manage counsellors and admins
-          </p>
+          <p className="text-sm font-semibold mb-1" style={{ color: "#3b82f6" }}>USER MANAGEMENT</p>
+          <h1 className="text-2xl font-black text-gray-900" style={{ letterSpacing: "-0.5px" }}>Manage Users</h1>
+          <p className="text-sm text-gray-500 mt-1">Create and manage counsellors and admins</p>
         </div>
 
         <button
           onClick={() => setShowForm(!showForm)}
-          className="flex items-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-sm text-white transition-all"
+          className="flex items-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-sm transition-all"
           style={{
-            background: showForm
-              ? "rgba(239,68,68,0.1)"
-              : "linear-gradient(135deg, #3b82f6, #6366f1)",
+            background: showForm ? "rgba(239,68,68,0.1)" : "linear-gradient(135deg, #3b82f6, #6366f1)",
             color: showForm ? "#ef4444" : "white",
             border: showForm ? "1px solid rgba(239,68,68,0.2)" : "none",
             boxShadow: showForm ? "none" : "0 4px 15px rgba(59,130,246,0.3)"
@@ -89,7 +94,6 @@ const AdminUsers = () => {
         </button>
       </div>
 
-      {/* Stats */}
       <div className="grid grid-cols-3 gap-4 mb-6">
         {[
           { label: "Total Users", value: users.length, color: "#3b82f6", bg: "rgba(59,130,246,0.08)", icon: <MdPeople size={20} /> },
@@ -110,7 +114,6 @@ const AdminUsers = () => {
         ))}
       </div>
 
-      {/* Create Form */}
       {showForm && (
         <div className="bg-white rounded-2xl p-6 mb-6"
           style={{ border: "1px solid rgba(59,130,246,0.2)", boxShadow: "0 4px 20px rgba(59,130,246,0.1)" }}>
@@ -135,9 +138,10 @@ const AdminUsers = () => {
                   className="px-4 py-2.5 rounded-xl text-sm text-gray-800 outline-none"
                   style={{ border: "1px solid #e2e8f0", background: "#f8fafc" }}
                 >
-                  <option value="counsellor">Counsellor</option>
-                  <option value="admin">Admin</option>
-                  <option value="superAdmin">Super Admin</option>
+                  {/* ✅ FIX 3: () use kiya, hardcoded option hataya */}
+                  {roleOptions.map((opt) => (
+                    <option key={opt.value} value={opt.value}>{opt.label}</option>
+                  ))}
                 </select>
               </div>
             </div>
@@ -158,14 +162,11 @@ const AdminUsers = () => {
         </div>
       )}
 
-      {/* Table */}
       <div className="bg-white rounded-2xl overflow-hidden"
         style={{ border: "1px solid rgba(0,0,0,0.06)", boxShadow: "0 1px 20px rgba(0,0,0,0.04)" }}>
 
-        <div className="px-6 py-4 border-b flex items-center gap-2"
-          style={{ borderColor: "rgba(0,0,0,0.06)" }}>
-          <div className="w-1 h-5 rounded-full"
-            style={{ background: "linear-gradient(135deg, #3b82f6, #6366f1)" }} />
+        <div className="px-6 py-4 border-b flex items-center gap-2" style={{ borderColor: "rgba(0,0,0,0.06)" }}>
+          <div className="w-1 h-5 rounded-full" style={{ background: "linear-gradient(135deg, #3b82f6, #6366f1)" }} />
           <h2 className="font-bold text-gray-800">All Users</h2>
           <span className="ml-auto text-xs px-3 py-1 rounded-full font-semibold"
             style={{ background: "rgba(59,130,246,0.1)", color: "#3b82f6" }}>
@@ -202,7 +203,6 @@ const AdminUsers = () => {
                 >
                   <td className="p-4 text-gray-400 text-xs font-semibold">{index + 1}</td>
 
-                  {/* User */}
                   <td className="p-4">
                     <div className="flex items-center gap-3">
                       <div className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold text-white flex-shrink-0"
@@ -215,7 +215,6 @@ const AdminUsers = () => {
 
                   <td className="p-4 text-gray-500 text-sm">{u.email}</td>
 
-                  {/* Role */}
                   <td className="p-4">
                     <span className="px-3 py-1 rounded-full text-xs font-semibold"
                       style={{
@@ -226,7 +225,6 @@ const AdminUsers = () => {
                     </span>
                   </td>
 
-                  {/* Status */}
                   <td className="p-4">
                     <span className="flex items-center gap-1.5 w-fit px-3 py-1 rounded-full text-xs font-semibold"
                       style={{
@@ -239,7 +237,6 @@ const AdminUsers = () => {
                     </span>
                   </td>
 
-                  {/* Actions */}
                   <td className="p-4">
                     <button
                       onClick={() => handleToggle(u._id, u.isActive)}
