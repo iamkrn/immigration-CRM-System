@@ -53,14 +53,26 @@ const studentSchema = new mongoose.Schema({
   type: Boolean,
   default: true
 },
+
+//for counsellor
 assignedTo: {
   type: mongoose.Schema.Types.ObjectId,
   ref: "User"
 },
 
+//student login user
 user: {
   type: mongoose.Schema.Types.ObjectId,
   ref: "User"
+},
+
+//(safe addition for chat system)
+hasChat: {
+  type:Boolean,
+  default: false
+},
+lastMessageAt: {
+  type: Date
 },
 
    //future
