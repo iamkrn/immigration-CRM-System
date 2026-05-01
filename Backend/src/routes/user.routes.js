@@ -173,8 +173,11 @@ router.post('/create-user', authMiddleware,roleMiddleware('admin','superAdmin') 
   try {
     const { name, email, password, role } = req.body;
 
-    if(role === "superAdmin" && req.user.role !== "superAdmin")
-      return res.status(403).json({message:"only superAdmin can create another superAdmin"})
+    // only superAdmin can create 'admin' ya 'superAdmin' only
+    if ((role === 'admin' || role === 'superAdmin') && req.user.role !== 'superAdmin') {
+      return res.status(403).json({ message: 'Only SuperAdmin can create Admin or SuperAdmin' });
+    }
+
     const bcrypt = require('bcrypt');
 
     const exists = await User.findOne({ email });
