@@ -7,6 +7,7 @@ const messageSchema = new mongoose.Schema({
         type:mongoose.Schema.Types.ObjectId,
         ref:"User"
     },
+    senderModel: { type: String, enum: ["User", "Student"] },
     chatId:{
         type:mongoose.Schema.Types.ObjectId,
         ref:"Chat"
@@ -16,7 +17,7 @@ const messageSchema = new mongoose.Schema({
         required:true
     },
 
-    attchment:[{
+    attachment:[{
         url:String,
         type:String,
         name:String

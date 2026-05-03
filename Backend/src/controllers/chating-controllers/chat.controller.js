@@ -31,13 +31,13 @@ exports.createChat = async (req,res) => {
     try {
         const {studentId, consellorId} = req.body
           
-        const existing = await Chat.findOne({studentid})
+        const existing = await Chat.findOne({studentId})
 
         if(existing){return res.json(existing)}
 
         const newChat = await Chat.create({
             studentId,
-            consellorId
+            counsellorId
         })
 
         res.status(201).json(newChat)

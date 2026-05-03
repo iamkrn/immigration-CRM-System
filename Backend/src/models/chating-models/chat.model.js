@@ -3,7 +3,7 @@ const mongoose =  require('mongoose')
 
 const chatSchema = new mongoose.Schema({
     
-    cousellorId:{
+    counsellorId:{
         type:mongoose.Schema.Types.ObjectId,
         ref:"User",
         required:true
@@ -23,4 +23,5 @@ const chatSchema = new mongoose.Schema({
 
 },{timestamps:true})
 
-module.exports = mongoose.model("Chat",chatSchema.index({studentId: 1}, {unique: true}))
+chatSchema.index({studentId: 1},{unique: true})
+module.exports = mongoose.model("Chat",chatSchema)

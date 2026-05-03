@@ -23,7 +23,7 @@ exports.getMessage = async (req,res) => {
         const messages = await Message.find({chatId})
         .sort({createdAt: 1})
 
-        res.status(201).json(messages)
+        res.status(200).json(messages)
         
     } catch (error) {
         res.status(500).json({error:error.message})
