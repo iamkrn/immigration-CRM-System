@@ -6,6 +6,8 @@ import {
   MdCancel, MdVisibility, MdDownload, MdFolder
 } from "react-icons/md";
 
+const BASE_URL = import.meta.env.VITE_BASE_URL || "http://localhost:5000"
+
 const Document = () => {
   const [docs, setDocs] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -52,6 +54,18 @@ const Document = () => {
     rejected: { bg: "rgba(239,68,68,0.1)", color: "#ef4444" },
     pending: { bg: "rgba(245,158,11,0.1)", color: "#f59e0b" },
   };
+    const handleDownload = async (fileURL, fileName) => {
+    const res  = await fetch(`${BASE_URL}/${fileURL}`);
+    const blob = await res.blob();
+    const url  = URL.createObjectURL(blob);
+    const a    = document.createElement("a");
+    a.href     = url;
+    a.download = fileName;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
+
 
   return (
     <div className="p-6 min-h-screen" style={{ background: "#f8fafc" }}>
@@ -67,7 +81,7 @@ const Document = () => {
           </h2>
         </div>
 
-        {(role === "student" || role === "counsellor" || role === "admin" || role === "superadmin") && (
+        {(role === "student" || role === "counsellor" || role === "admin" || role === "superAdmin") && (
           <button
             onClick={() => navigate(`/add-document/${applicationId}`)}
             className="flex items-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-sm text-white"
@@ -213,17 +227,16 @@ const Document = () => {
                         <MdVisibility size={14} />
                       </a>
 
-                      <a href={`http://localhost:5000/${d.fileURL}`} download
-                        className="w-7 h-7 rounded-lg flex items-center justify-center transition-all"
-                        style={{ background: "rgba(100,116,139,0.1)", color: "#64748b" }}
-                        onMouseEnter={e => e.currentTarget.style.background = "rgba(100,116,139,0.2)"}
-                        onMouseLeave={e => e.currentTarget.style.background = "rgba(100,116,139,0.1)"}
-                      >
-                        <MdDownload size={14} />
-                      </a>
+                      <button
+                      onClick={() => handleDownload(d.fileURL, d.name)}
+                      className="w-7 h-7 rounded-lg flex items-center justify-center"
+                      style={{ background: "rgba(100,116,139,0.1)", color: "#64748b" }}
+                    >
+                      <MdDownload size={14} />
+                    </button>
                     </div>
-                  </td>
-                </tr>
+                                      </td>
+                                    </tr>
               ))
             )}
           </tbody>
