@@ -1,9 +1,9 @@
 const express = require('express')
 const {getChatByStudent,createChat} = require('../../controllers/chating-controllers/chat.controller')
-const authmiddleware = require('../../middlewares/auth.middleware')
+const {authMiddleware} = require('../../middlewares/auth.middleware')
 const route = express.Router();
 
-route.post('/',authmiddleware,createChat)
-route.get('/:studentId',authmiddleware,getChatByStudent)
+route.post('/',authMiddleware,createChat)
+route.get('/:studentId',authMiddleware,getChatByStudent)
 
 module.exports = route

@@ -97,8 +97,8 @@ router.get(
         res.json({
         success: true,
         user: {
-          ...req.user._doc,
-          ...(student ? student._doc : {})
+          ...req.user.toObject(),
+          ...(student ? student.toObject() : {})
         }
       });
           }
@@ -207,4 +207,3 @@ router.put('/toggle/:id', authMiddleware, async (req, res) => {
 
 module.exports = router;
 
-module.exports = router;

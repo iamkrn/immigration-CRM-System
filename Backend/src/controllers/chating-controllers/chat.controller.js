@@ -29,7 +29,7 @@ exports.getChatByStudent = async(req,res) => {
 //create chat
 exports.createChat = async (req,res) => {
     try {
-        const {studentId, consellorId} = req.body
+        const {studentId, counsellorId} = req.body
           
         const existing = await Chat.findOne({studentId})
 

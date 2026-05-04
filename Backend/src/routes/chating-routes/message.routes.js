@@ -1,10 +1,10 @@
 const express = require('express')
 const {getMessage,sendMessage} = require('../../controllers/chating-controllers/message.controller')
-const authmiddleware = require('../../middlewares/auth.middleware')
+const {authMiddleware} = require('../../middlewares/auth.middleware')
 
 const route = express.Router();
 
-route.get('/:chatId',authmiddleware,getMessage);
-route.post('/',authmiddleware,sendMessage)
+route.get('/:chatId',authMiddleware,getMessage);
+route.post('/',authMiddleware,sendMessage)
 
 module.exports = route
