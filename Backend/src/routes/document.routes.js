@@ -11,7 +11,7 @@ router.post(
   '/',
   authMiddleware,
   roleMiddleware('student','counsellor'),
-  upload.single('files',10),
+  upload.array('files',10),
   createDocument
 );
 

@@ -2,29 +2,36 @@ const Document = require('../models/document.model');
 
 
 //create the documents
+
 exports.createDocument = async (req, res) => {
   try {
-     if(!req.file || req.file.length === 0){
-      res.status(400).json({message:"no file uploaded"})
-     }
 
-     const {type, application} = req.body;
-      
-     const savedDoc = await Promise.all(
-      req.file.map(file => Document.craete ({
-        name: file.originalname,
-        type,
-        application,
-        fileURL: file.path
-      })
+    // Files check 
+    if (!req.files || req.files.length === 0) {
+      return res.status(400).json({ 
+        success: false,
+        message: "No files uploaded" 
+      });
+    }
 
-    )
-     )
+    const { type, application } = req.body;
 
-    res.json({
+    //  create document entries for each file
+    const savedDocs = await Promise.all(
+      req.files.map(file =>
+        Document.create({
+          name: file.originalname,
+          type,
+          application,
+          fileURL: file.path
+        })
+      )
+    );
+
+    res.status(201).json({
       success: true,
-      count:savedDoc.length,
-      data: savedDoc
+      count: savedDocs.length,
+      data: savedDocs
     });
 
   } catch (error) {
