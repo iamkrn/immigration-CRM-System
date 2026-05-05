@@ -15,7 +15,7 @@ exports.registerUser = async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const finalRole = role ? role.toLowerCase() : "student";
+    const finalRole = "student";
 
     const user = await User.create({
       name,

@@ -159,7 +159,7 @@ router.put('/profile', authMiddleware, async (req, res) => {
 });
 
 // GET -all users (Admin ke liye)
-router.get('/all-users', authMiddleware, async (req, res) => {
+router.get('/all-users', authMiddleware,roleMiddleware('admin','superAdmin') ,async (req, res) => {
   try {
     const users = await User.find({ role: { $ne: 'student' } }).select('-password');
     res.status(200).json({ success: true, users });
@@ -195,7 +195,7 @@ router.post('/create-user', authMiddleware,roleMiddleware('admin','superAdmin') 
 });
 
 // PUT - Active/Inactive toggle
-router.put('/toggle/:id', authMiddleware, async (req, res) => {
+router.put('/toggle/:id', authMiddleware,roleMiddleware('admin','superAdmin'),async (req, res) => {
   try {
     const { isActive } = req.body;
     await User.findByIdAndUpdate(req.params.id, { isActive });
