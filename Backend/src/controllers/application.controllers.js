@@ -1,11 +1,12 @@
 const Application = require('../models/application.model');
+const { sendStatusUpdateEmail } = require('../services/email.service');
 
-//  CREATE Application
+// CREATE Application
 exports.createApplication = async (req, res) => {
   try {
     const app = new Application({
       ...req.body,
-      createdBy: req.user.id // IMPORTANT
+      createdBy: req.user.id 
     });
 
     await app.save();
@@ -136,12 +137,30 @@ exports.updateApplication = async (req, res) => {
             message: "Not allowed"
           });
         }
-    const updated = await Application.findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      {returnDocument:  'after' }
-    );
+    // status change check
+      const statusChanged = req.body.status && req.body.status !== app.status;
 
+      const updated = await Application.findByIdAndUpdate(
+        req.params.id,
+        req.body,
+        { new: true }
+      ).populate('student', 'email firstName');
+
+      // email send if  status is not change
+      if (statusChanged && updated?.student?.email) {
+        try {
+          await sendStatusUpdateEmail({
+            toEmail: updated.student.email,
+            studentName: updated.student.firstName || 'Student',
+            university: updated.university,
+            course: updated.course,
+            country: updated.country,
+            newStatus: updated.status
+          });
+        } catch (emailError) {
+          console.error('Email sending failed:', emailError.message);
+        }
+      }
     res.json({
       success: true,
       data: updated
@@ -165,7 +184,7 @@ exports.deleteApplication = async (req, res) => {
       return res.status(404).json({
         success: false,
         message: "Application not found"
-      });
+      }); 
     }
 
     // counsellor → only own delete
