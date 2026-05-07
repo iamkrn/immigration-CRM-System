@@ -10,9 +10,11 @@ const EditApplication = () => {
     course: "",
     intake: "",
     student: "",
-    status: "draft"
+    status: "draft",
+    visaStatus: "not_started"
   });
 
+  
   const { id } = useParams();
 
   const navigate = useNavigate();
@@ -38,6 +40,18 @@ const EditApplication = () => {
     "visa_approved",
     "visa_rejected"
   ];
+
+  //  VALID VISA STATUS FLOW
+  const visaStatusOptions = [
+    "not_started",
+    "doc_pending",
+    "submitted",
+    "processing",
+    "approved",
+    "rejected",
+    "withdrawn"
+  ];
+
 
   const handleUpdate = async (e) => {
     e.preventDefault();
@@ -81,13 +95,17 @@ const EditApplication = () => {
         course: res.data.data.course || "",
         intake: res.data.data.intake || "",
         student: res.data.data.student?._id || "",
-        status: res.data.data.status || "draft"
+        status: res.data.data.status || "draft",
+        visaStatus: res.data.data.visaStatus || "not_started"
       });
 
     }  catch (error) {
-  console.log("Error:", error.response?.data);
-  alert(error.response?.data?.message || "Failed to load application");
-
+      const msg =  error.response?.data?.message || "Failed to fetch application data";
+      if(error.response?.status === 403){
+        navigate(appsRoute);
+      }else{
+        alert(msg);
+      }
     }
     finally {
       setFetchingData(false);
@@ -213,6 +231,23 @@ const EditApplication = () => {
                 </option>
               ))}
             </select>
+          </div>
+          <div>
+            <h2 className="font-semibold mb-3 text-grey-600 text-lg">
+              Visa Status
+              </h2>
+              <select
+              name="visaStatus"
+              value={form.visaStatus}
+              onChange={handleChange}
+              className="input w-full"
+              >
+                {visaStatusOptions.map((s)=>(
+                  <option key={s} value ={s}>
+                    {s.replaceAll("_", " ")}
+                  </option>
+                ))}
+              </select>
           </div>
 
           {/* Buttons */}

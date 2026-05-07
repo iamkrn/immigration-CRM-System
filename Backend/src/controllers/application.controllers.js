@@ -75,18 +75,12 @@ exports.getApplicationById = async (req, res) => {
     }
 
     // counsellor → only own access
-      if (
-        req.user.role === "counsellor" &&
-        app.createdBy?._id 
-          ? app.createdBy._id.toString() !== req.user._id
-          : app.createdBy?.toString() !== req.user._id
-      ) {
-        return res.status(403).json({
-          success: false,
-          message: "Not allowed"
-        });
-      }  
-      //student only own access
+      if (req.user.role === "counsellor") {
+  const createdById = app.createdBy?._id?.toString() || app.createdBy?.toString();
+  if (createdById !== req.user.id) {
+    return res.status(403).json({ success: false, message: "Not allowed" });
+  }
+}//student only own access
          if (req.user.role === "student") {
           // after populate it have only one object
           const studentId = app.student?._id 
@@ -126,17 +120,7 @@ exports.updateApplication = async (req, res) => {
         message: "Application not found"
       });
     }
-
-    // counsellor → only own update
-    if (
-          req.user.role === "counsellor" &&
-           app.createdBy?.toString() !== req.user._id.toString()
-        ) {
-          return res.status(403).json({
-            success: false,
-            message: "Not allowed"
-          });
-        }
+    
     // status change check
       const statusChanged = req.body.status && req.body.status !== app.status;
     
