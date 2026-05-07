@@ -44,6 +44,13 @@ const applicationSchema = new mongoose.Schema({
     enum: ["draft", "submitted", "approved", "rejected"],
     default: "draft"
   },
+  
+  // Visa details
+  visaStatus: {
+  type: String,
+  enum: ["not_started", "docs_pending", "submitted", "approved", "rejected", "withdrawn"],
+  default: "not_started"
+},
 
   // Extra notes
   remarks: {

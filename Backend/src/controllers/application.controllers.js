@@ -6,7 +6,7 @@ exports.createApplication = async (req, res) => {
   try {
     const app = new Application({
       ...req.body,
-      createdBy: req.user.id 
+      createdBy: req.user._id 
     });
 
     await app.save();
@@ -32,7 +32,7 @@ exports.getApplications = async (req, res) => {
 
     // counsellor only
     if (req.user.role === "counsellor") {
-      query.createdBy = req.user.id;
+      query.createdBy = req.user._id;
     }
   //student only
     if (req.user.role === "student") {
@@ -78,8 +78,8 @@ exports.getApplicationById = async (req, res) => {
       if (
         req.user.role === "counsellor" &&
         app.createdBy?._id 
-          ? app.createdBy._id.toString() !== req.user.id
-          : app.createdBy?.toString() !== req.user.id
+          ? app.createdBy._id.toString() !== req.user._id
+          : app.createdBy?.toString() !== req.user._id
       ) {
         return res.status(403).json({
           success: false,
@@ -130,7 +130,7 @@ exports.updateApplication = async (req, res) => {
     // counsellor → only own update
     if (
           req.user.role === "counsellor" &&
-           app.createdBy?.toString() !== req.user.id
+           app.createdBy?.toString() !== req.user._id.toString()
         ) {
           return res.status(403).json({
             success: false,
@@ -139,15 +139,18 @@ exports.updateApplication = async (req, res) => {
         }
     // status change check
       const statusChanged = req.body.status && req.body.status !== app.status;
+    
+    // visa Satus change
+    const visaStatusChanged = req.body.visaStatus && req.body.visaStatus !== app.visaStatus;
 
       const updated = await Application.findByIdAndUpdate(
         req.params.id,
         req.body,
-        { new: true }
+        { new: true,runvalidators:true }
       ).populate('student', 'email firstName');
 
-      // email send if  status is not change
-      if (statusChanged && updated?.student?.email) {
+      // send email if status changed and student email exists
+      if ((statusChanged||visaStatusChanged) && updated?.student?.email) {
         try {
           await sendStatusUpdateEmail({
             toEmail: updated.student.email,
@@ -155,7 +158,9 @@ exports.updateApplication = async (req, res) => {
             university: updated.university,
             course: updated.course,
             country: updated.country,
-            newStatus: updated.status
+            newStatus: updated.status || updated.visaStatus,
+            isVisa: visaStatusChanged
+
           });
         } catch (emailError) {
           console.error('Email sending failed:', emailError.message);
@@ -190,7 +195,7 @@ exports.deleteApplication = async (req, res) => {
     // counsellor → only own delete
     if (
       req.user.role === "counsellor" &&
-      app.createdBy.toString() !== req.user.id
+      app.createdBy.toString() !== req.user._id.toString()
     ) {
       return res.status(403).json({
         success: false,
