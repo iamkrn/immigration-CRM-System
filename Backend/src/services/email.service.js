@@ -27,9 +27,9 @@ const statusConfig = {
 exports.verifyEmailService = async () => {
   try {
     await transporter.verify();
-    console.log('✅ Email service ready');
+    console.log('Email service ready');
   } catch (err) {
-    console.error('❌ Email service failed — check EMAIL_USER/EMAIL_PASS:', err.message);
+    console.error('Email service failed — check EMAIL_USER/EMAIL_PASS:', err.message);
   }
 };
 
@@ -102,8 +102,8 @@ exports.sendStatusUpdateEmail = async ({ toEmail, studentName, university, cours
     };
   
     await transporter.sendMail(mailOptions);
-    console.log(`✅ Email sent to ${toEmail}`);
+    console.log(`Email sent to ${toEmail}`);
   
   } catch (error) {
-    console.error(`❌ Failed to send email to ${toEmail}:`, error.message);
+    console.error(`Failed to send email to ${toEmail}:`, error.message);
   }};
