@@ -53,6 +53,9 @@ const App = () => {
           <Route path="profile" element={<Profile />} />
           <Route path="add-application" element={<AddApplication />} />
           <Route path="edit-application/:id" element={<EditApplication />} />
+          <Route path="add-customer" element={<AddCustomer />} />
+          <Route path="edit-customer/:id" element={<EditCustomer />} />
+
 
           </Route>
 

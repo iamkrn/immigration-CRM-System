@@ -13,6 +13,8 @@ function Customers() {
   const [students, setStudents] = useState([]);
 
   const user = JSON.parse(localStorage.getItem("user")) || {};
+  const isAdmin = ["admin", "superAdmin"].includes(user?.role);
+
   const canEdit = ["admin", "counsellor", "superAdmin"].includes(user.role);
   const canDelete = ["admin", "superAdmin"].includes(user.role);
   const role = user?.role;
@@ -44,10 +46,10 @@ function Customers() {
   };
 
   const skuConfig = {
-    superPremium: { label: "💎 Super Premium", bg: "rgba(245,158,11,0.1)", color: "#d97706" },
-    premium: { label: "⭐ Premium", bg: "rgba(139,92,246,0.1)", color: "#8b5cf6" },
-    "value+": { label: "✅ Value+", bg: "rgba(59,130,246,0.1)", color: "#3b82f6" },
-    alliance: { label: "🔵 Alliance", bg: "rgba(100,116,139,0.1)", color: "#64748b" },
+    superPremium: { label: "Super Premium", bg: "rgba(245,158,11,0.1)", color: "#d97706" },
+    premium: { label: "Premium", bg: "rgba(139,92,246,0.1)", color: "#8b5cf6" },
+    "value+": { label: "Value+", bg: "rgba(59,130,246,0.1)", color: "#3b82f6" },
+    alliance: { label: "Alliance", bg: "rgba(100,116,139,0.1)", color: "#64748b" },
   };
 
   const leadConfig = {
@@ -94,7 +96,7 @@ function Customers() {
 
         {["counsellor", "admin", "superAdmin"].includes(role) && (
           <button
-            onClick={() => navigate("/add-customer")}
+            onClick={() => navigate(isAdmin ? "/admin/add-customer" : "/add-customer")}
             className="flex items-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-sm text-white"
             style={{
               background: "linear-gradient(135deg, #3b82f6, #6366f1)",
@@ -144,7 +146,7 @@ function Customers() {
                   {/* Name + Avatar */}
                   <td className="p-4">
                     <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold text-white flex-shrink-0"
+                      <div className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold text-white shrink-0"
                         style={{ background: "linear-gradient(135deg, #3b82f6, #6366f1)" }}>
                         {s.firstName?.charAt(0).toUpperCase()}
                       </div>
@@ -201,8 +203,7 @@ function Customers() {
                     <div className="flex items-center gap-2">
                       {canEdit && (
                         <button
-                          onClick={() => navigate(`/edit-customer/${s._id}`)}
-                          className="w-8 h-8 rounded-lg flex items-center justify-center transition-all"
+                          onClick={() => navigate(isAdmin ? `/admin/edit-customer/${s._id}` : `/edit-customer/${s._id}`)}                          className="w-8 h-8 rounded-lg flex items-center justify-center transition-all"
                           style={{ background: "rgba(245,158,11,0.1)", color: "#f59e0b" }}
                           onMouseEnter={e => e.currentTarget.style.background = "rgba(245,158,11,0.2)"}
                           onMouseLeave={e => e.currentTarget.style.background = "rgba(245,158,11,0.1)"}

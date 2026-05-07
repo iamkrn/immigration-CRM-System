@@ -6,6 +6,8 @@ import {
   MdDescription, MdFolder
 } from "react-icons/md";
 
+
+
 const statusConfig = {
   draft: { bg: "rgba(100,116,139,0.1)", color: "#64748b" },
   documents_pending: { bg: "rgba(245,158,11,0.1)", color: "#f59e0b" },
@@ -23,8 +25,9 @@ const Application = () => {
   const [apps, setApps] = useState([]);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const user = JSON.parse(localStorage.getItem("user"));
+  const isAdmin = ["admin", "superAdmin"].includes(user?.role);
 
-  const user = JSON.parse(localStorage.getItem("user")) || {};
   const canEdit = ["admin", "counsellor", "superAdmin"].includes(user.role);
   const canDelete = ["admin", "superAdmin"].includes(user.role);
   const canAdd = ["admin", "counsellor", "superAdmin"].includes(user.role);
@@ -95,7 +98,7 @@ const Application = () => {
 
         {canAdd && (
           <button
-            onClick={() => navigate("/add-application")}
+            onClick={() => navigate(isAdmin ? "/admin/add-application" : "/add-application")}
             className="flex items-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-sm text-white"
             style={{
               background: "linear-gradient(135deg, #3b82f6, #6366f1)",
@@ -152,7 +155,7 @@ const Application = () => {
                   {/* Student */}
                   <td className="p-4">
                     <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold text-white flex-shrink-0"
+                      <div className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold text-white shrink-0"
                         style={{ background: "linear-gradient(135deg, #3b82f6, #6366f1)" }}>
                         {a.student?.firstName?.charAt(0).toUpperCase() || "?"}
                       </div>
@@ -184,7 +187,7 @@ const Application = () => {
                     <div className="flex items-center gap-2">
                       {canEdit && (
                         <button
-                          onClick={() => navigate(`/edit-application/${a._id}`)}
+                          onClick={() => navigate(isAdmin ? `/admin/edit-application/${a._id}` : `/edit-application/${a._id}`)}
                           className="w-8 h-8 rounded-lg flex items-center justify-center transition-all"
                           style={{ background: "rgba(245,158,11,0.1)", color: "#f59e0b" }}
                           onMouseEnter={e => e.currentTarget.style.background = "rgba(245,158,11,0.2)"}
