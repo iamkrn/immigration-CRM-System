@@ -25,6 +25,19 @@ exports.getChatByStudent = async(req,res) => {
     }
 }
 
+exports.getAllChats = async(req,res) => {
+    try {
+        const chats = await Chat.find()
+        .populate('studentId')
+        .populate('counsellorId')
+        res.json(chats)
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({message: error.message})
+    
+    }
+}
+
 
 //create chat
 exports.createChat = async (req,res) => {

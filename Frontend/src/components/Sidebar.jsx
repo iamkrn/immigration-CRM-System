@@ -112,13 +112,19 @@ const Sidebar = () => {
 
         <div className="my-2 border-t" style={{ borderColor: "rgba(255,255,255,0.06)" }} />
 
+         <NavLink to="/chat" className={menuClass}
+         style={({ isActive }) => isActive ? activeStyle : {}}>
+            Chat
+          </NavLink> 
+
         <NavLink to="/profile"
           className={menuClass}
-          style={({ isActive }) => isActive ? activeStyle : {}}
-        >
+          style={({ isActive }) => isActive ? activeStyle : {}}>
           <MdPerson size={18} />
           Profile
         </NavLink>
+
+        
 
       </nav>
 
@@ -127,7 +133,7 @@ const Sidebar = () => {
 
         {/* User Info */}
         <div className="flex items-center gap-3 mb-3 px-2">
-          <div className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold text-white flex-shrink-0"
+          <div className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold text-white shrink-0"
             style={{ background: "linear-gradient(135deg, #3b82f6, #6366f1)" }}>
             {user?.name?.charAt(0).toUpperCase()}
           </div>

@@ -61,11 +61,18 @@ exports.LoginUser = async(req,res) =>{
 
     const token = await jwt.sign({id:user._id, role: user.role },
         process.env.SECRET_KEY, {expiresIn:'1d'})
-        //token Done!
+        
+        const studentData = await Student.findOne({ user: user._id });
+        console.log("studentData:", studentData)
+
+
 
         res.status(200).json({
             message:"Login Successfull",
-            user, 
+            user:{
+              ...user.toObject(),
+              studentId:studentData?._id
+            }, 
             token
         });
         

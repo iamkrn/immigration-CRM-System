@@ -11,6 +11,8 @@ import Profile from "./pages/Profile";
 import Students from "./pages/Students";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import Chat from "./pages/Chat";
+
 
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminUsers from "./pages/admin/AdminUsers";
@@ -70,7 +72,10 @@ const App = () => {
         >
           <Route index element={<Dashboard />} />
           <Route path="profile" element={<Profile />} />
+          
           <Route path="applications" element={<Application />} />
+                    <Route path="/chat" element = {<Chat />}/>
+
           <Route path="/documents/:applicationId" element={<Document />} />
           <Route path="add-document/:applicationId" element={<AddDocument />} />
           <Route path="/students" element={<Students />} />

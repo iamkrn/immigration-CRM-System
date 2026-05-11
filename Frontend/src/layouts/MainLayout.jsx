@@ -17,7 +17,7 @@ const MainLayout = () => {
         
         <Sidebar />
 
-         <div className="flex-1 overflow-y-auto" style={{ background: "#f8fafc" }}>
+         <div className="flex-1 overflow-hidden" style={{ background: "#f8fafc" }}>
             <Outlet context={{search}} />
         </div>
 

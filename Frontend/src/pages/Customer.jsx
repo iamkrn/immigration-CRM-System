@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import API from "../services/API";
+import chatService from "../services/chatService";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import {
-  MdPersonAdd, MdEdit, MdDelete,
+  MdPersonAdd, MdEdit, MdDelete,MdChat,
   MdPeople, MdCheckCircle, MdCancel
 } from "react-icons/md";
 
@@ -34,6 +35,15 @@ function Customers() {
       console.log("ERROR:", error.response?.data || error.message);
     }
   };
+
+  const handleStartChat = async (studentId) => {
+  try {
+    await chatService.createChat(studentId, user._id)
+    navigate("/chat")
+  } catch (err) {
+    console.log(err)
+  }
+}
 
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure?")) return;
@@ -220,6 +230,19 @@ function Customers() {
                           onMouseLeave={e => e.currentTarget.style.background = "rgba(239,68,68,0.1)"}
                         >
                           <MdDelete size={15} />
+                        </button>
+                      )}
+
+                      {/* Chat Button */}
+                      {role === "counsellor" && (
+                        <button
+                          onClick={() => handleStartChat(s._id)}
+                          className="w-8 h-8 rounded-lg flex items-center justify-center transition-all"
+                          style={{ background: "rgba(59,130,246,0.1)", color: "#3b82f6" }}
+                          onMouseEnter={e => e.currentTarget.style.background = "rgba(59,130,246,0.2)"}
+                          onMouseLeave={e => e.currentTarget.style.background = "rgba(59,130,246,0.1)"}
+                        >
+                          <MdChat size={15} />
                         </button>
                       )}
                     </div>

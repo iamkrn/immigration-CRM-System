@@ -35,7 +35,7 @@ const initSocket = (server) => {
 
     // ── Step 3: Message send to the room ──
     socket.on("sendMessage", ({ chatId, message }) => {
-      // Room ke saare members ko message milega
+      
       io.to(chatId).emit("receiveMessage", message);
     });
 
