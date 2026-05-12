@@ -5,7 +5,8 @@ import {
   MdDescription,
   MdPerson,
   MdLogout,
-  MdSchool
+  MdSchool,
+  MdChat
 } from "react-icons/md";
 
 const Sidebar = () => {
@@ -112,8 +113,10 @@ const Sidebar = () => {
 
         <div className="my-2 border-t" style={{ borderColor: "rgba(255,255,255,0.06)" }} />
 
-         <NavLink to="/chat" className={menuClass}
+         <NavLink to="/chat" 
+          className={menuClass}
          style={({ isActive }) => isActive ? activeStyle : {}}>
+          <MdChat size={18} />
             Chat
           </NavLink> 
 

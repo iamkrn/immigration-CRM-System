@@ -33,13 +33,8 @@ const initSocket = (server) => {
       console.log(`Socket ${socket.id} joined room: ${chatId}`);
     });
 
-    // ── Step 3: Message send to the room ──
-    socket.on("sendMessage", ({ chatId, message }) => {
-      
-      io.to(chatId).emit("receiveMessage", message);
-    });
-
-    // ── Step 4: Typing indicator ──
+    
+    // ── Step 3: Typing indicator ──
     socket.on("typing", ({ chatId, senderId }) => {
       socket.to(chatId).emit("userTyping", { senderId });
     });
@@ -48,7 +43,7 @@ const initSocket = (server) => {
       socket.to(chatId).emit("userStopTyping");
     });
 
-    // ── Step 5: Disconnect ──
+    // ── Step 4: Disconnect ──
     socket.on("disconnect", () => {
       console.log("User disconnected:", socket.id);
 

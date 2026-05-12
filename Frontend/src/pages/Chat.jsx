@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react"
 import chatService from "../services/chatService"
-import useSocket from "../hooks/useSocket"
+import useSocket from "../hooks/UseSocket"
 
 const Chat = () => {
   const user = JSON.parse(localStorage.getItem("user"))
@@ -25,14 +25,9 @@ const { socket, isConnected } = useSocket()
   try {
     if (user.role === "student") {
       const res = await chatService.getChatByStudent(user.studentId)
-      console.log("Student chat:", res.data)
       setActiveChat(res.data)
-      
-    
-      const msgRes = await chatService.getMessages(res.data._id)
-      console.log("Messages:", msgRes.data)
-      setMessages(msgRes.data)
-    } else {
+    }      
+      else {
       const res = await chatService.getAllChats()
       setChats(res.data)
     }
@@ -69,7 +64,7 @@ const loadMessages = async () => {
   }
   socket?.current?.on("receiveMessage", handleMessage)
   return () => socket?.current?.off("receiveMessage", handleMessage)
-}, [isConnected])
+}, [isConnected,activeChat?._id])
 
 // ─── 4. Auto scroll ──────────────────────────
   useEffect(() => {
@@ -93,8 +88,6 @@ const loadMessages = async () => {
       text,
       senderModel
     )
-    
-    setMessages((prev) => [...prev, res.data])
     setText("")
   } catch (err) {
     console.log(err)

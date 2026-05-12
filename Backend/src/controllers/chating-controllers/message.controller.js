@@ -1,5 +1,6 @@
 const Message = require('../../models/chating-models/message.model');
 const { getIO, getReceiverSocketId } = require('../../socket/socket');
+const Student = require('../../models/student.model');
 
 exports.sendMessage = async (req, res) => {
     try {
@@ -15,15 +16,21 @@ exports.sendMessage = async (req, res) => {
         });
 
         const io = getIO();
-
-
         io.to(chatId).emit("receiveMessage", message);
 
     
-        const receiverSocketId = getReceiverSocketId(receiverId);
-        if (receiverSocketId) {
-            io.to(receiverSocketId).emit("newMessageNotification", message);
-        }
+    let resolvedReceiverId = receiverId;
+    if (senderModel === "User") {
+      // counsellor is sending → receiver is a Student → find their User account
+      const studentDoc = await Student.findById(receiverId).select("user");
+      if (studentDoc?.user) resolvedReceiverId = studentDoc.user.toString();
+    }
+
+    const receiverSocketId = getReceiverSocketId(resolvedReceiverId);
+    if (receiverSocketId) {
+      io.to(receiverSocketId).emit("newMessageNotification", message);
+    }
+
 
         res.status(201).json(message);
 

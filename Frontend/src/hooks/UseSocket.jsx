@@ -11,7 +11,7 @@ const useSocket = () => {
 
         socketRef.current = io(
             import.meta.env.VITE_API_URL?.replace("/api", "") || "http://localhost:5000",
-            { query: { userId: user._id } }
+            { query: { userId: user._id }, withCredentials: true }
         )
 
         socketRef.current.on("connect", () => {
