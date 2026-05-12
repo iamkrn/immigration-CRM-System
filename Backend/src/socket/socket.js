@@ -21,7 +21,6 @@ const initSocket = (server) => {
     const userId = socket.handshake.query.userId;
     if (userId) {
       userSocketMap[userId] = socket.id;
-      console.log(`User ${userId} mapped to socket ${socket.id}`);
     }
 
     // Online users broadcast for connection and disconnection

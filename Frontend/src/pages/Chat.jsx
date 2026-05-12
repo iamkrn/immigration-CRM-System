@@ -6,7 +6,6 @@ import useSocket from "../hooks/UseSocket"
 
 const Chat = () => {
   const user = JSON.parse(localStorage.getItem("user"))
-          console.log(user)
 
 const { socket, isConnected } = useSocket()
 
@@ -17,10 +16,9 @@ const { socket, isConnected } = useSocket()
   const bottomRef = useRef(null)    // auto scroll 
 
   // ─── 1. load chat ──────────────────────
-  useEffect(() => {
-    loadChats()
-  }, [])
-
+  
+  
+useEffect(() => {
   const loadChats = async () => {
   try {
     if (user.role === "student") {
@@ -35,26 +33,30 @@ const { socket, isConnected } = useSocket()
     console.log(err)
   }
 }
-  // ─── 2.  when chat select then message load ───
-          useEffect(() => {
-  if (!activeChat?._id) return
-  loadMessages()
-  if (isConnected) {
-    socket?.current?.emit("joinRoom", activeChat._id)
-    console.log("Joined room:", activeChat._id)
-  }
-}, [activeChat?._id, isConnected])
+    loadChats();
+  }, [])
 
-const loadMessages = async () => {
+  // ─── 2.  when chat select then message load ───
+          
+  useEffect(() => {
+      if (!activeChat?._id) return
+
+    const loadMessages = async () => {
     try {
       const res = await chatService.getMessages(activeChat._id)
-          console.log("Messages:", res.data) 
 
       setMessages(res.data)
     } catch (err) {
       console.log(err)
     }
   }
+
+  loadMessages();
+  if (isConnected) {
+    socket?.current?.emit("joinRoom", activeChat._id)
+  }
+}, [activeChat?._id, isConnected])
+
 
   // ─── 3. Socket — real time message receive ───
  useEffect(() => {
@@ -82,7 +84,7 @@ const loadMessages = async () => {
   const senderModel = user.role === "student" ? "Student" : "User"
 
   try {
-    const res = await chatService.sendMessage(
+    await chatService.sendMessage(
       activeChat._id,
       receiverId,
       text,
@@ -96,11 +98,11 @@ const loadMessages = async () => {
 
   // ─── UI ──────────────────────────────────────
   return (
-  <div className="flex bg-gray-100" style={{ height: "100%", minHeight: 0 }}>
+  <div className="flex flex-1 h-full bg-gray-100"  style={{  minHeight: 0 }}>
 
     {/* ── LEFT PANEL ── */}
     {(user.role === "counsellor" || user.role === "admin" || user.role === "superAdmin") && (
-      <div className="flex flex-col w-80 bg-white border-r border-gray-200 shrink-0">
+      <div className="flex flex-col w-80 bg-white border-r border-gray-200 shrink-0 overflow-hidden">
 
         {/* Header */}
         <div className="px-5 py-4 border-b border-gray-100 flex items-center justify-between"
@@ -144,7 +146,7 @@ const loadMessages = async () => {
                   onMouseLeave={e => { if (!isActive) e.currentTarget.style.background = "white" }}
                 >
                   {/* Avatar */}
-                  <div className="w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-base shrink-0"
+                  <div className="w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-base shrink-0 "
                     style={{ background: "linear-gradient(135deg, #075E54, #128C7E)" }}>
                     {chat.studentId?.firstName?.charAt(0).toUpperCase()}
                   </div>
@@ -204,7 +206,7 @@ const loadMessages = async () => {
           </div>
 
           {/* Messages */}
-          <div className="flex-1 overflow-y-auto px-4 py-4 flex flex-col justify-end gap-1"
+          <div className="flex-1 overflow-y-auto px-4 py-4 flex flex-col  gap-1"
             style={{
               background: "#E5DDD5",
               backgroundImage: "url(\"data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000000' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E\")"

@@ -32,7 +32,7 @@ const Sidebar = () => {
   };
 
   return (
-    <div className="w-64 flex flex-col min-h-screen"
+    <div className="w-64 flex flex-col h-full"
       style={{ background: "#0f172a", borderRight: "1px solid rgba(255,255,255,0.06)" }}>
 
       {/* Logo */}
