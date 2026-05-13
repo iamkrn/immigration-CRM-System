@@ -9,6 +9,7 @@ const documentRoutes = require('./routes/document.routes')
 const dashboardRoutes = require('./routes/dashboard.routes');
 const chatRoutes = require('./routes/chating-routes/chat.routes')
 const messageRoutes = require('./routes/chating-routes/message.routes')
+const shortlistRoutes = require('./routes/shortlist.routes')
 
 
 app.use(cors({
@@ -18,14 +19,15 @@ app.use(cors({
 
 app.use(express.json());
 
-app.use('/api/auth',authRoutes)
-app.use('/api/user',userRoutes)
-app.use('/api/students',studentRoutes)
-app.use('/api/applications',applicationRoutes)
-app.use('/api/documents',documentRoutes)
-app.use('/uploads',express.static('uploads'))
+app.use('/api/auth',authRoutes);
+app.use('/api/user',userRoutes);
+app.use('/api/students',studentRoutes);
+app.use('/api/applications',applicationRoutes);
+app.use('/api/documents',documentRoutes);
+app.use('/uploads',express.static('uploads'));
 app.use('/api/dashboard', dashboardRoutes);
-app.use('/api/chat',chatRoutes),
-app.use('/api/message',messageRoutes)
+app.use('/api/chat',chatRoutes);
+app.use('/api/message',messageRoutes);
+app.use('/api/shortlist', shortlistRoutes);
 
 module.exports = app;
