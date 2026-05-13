@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import API from "../services/API";
+import ProfileMeter from "../components/ProfileMeter";
 
 function Profile() {
   const [user, setUser] = useState(null);
@@ -115,42 +116,7 @@ function Profile() {
             </h2>
 
             {/* PROFILE COMPLETION BAR */}
-            <div className="bg-gray-50 rounded-xl p-4 mb-6 border">
-              <div className="flex justify-between items-center mb-2">
-                <p className="text-sm font-semibold text-gray-600">
-                  Profile Completion
-                </p>
-                <p className={`text-sm font-bold ${
-                  user.studentData?.profileCompletion >= 80
-                    ? "text-green-600"
-                    : user.studentData?.profileCompletion >= 50
-                    ? "text-yellow-600"
-                    : "text-red-500"
-                }`}>
-                  {user.studentData?.profileCompletion || 0}%
-                </p>
-              </div>
-              <div className="w-full bg-gray-200 rounded-full h-3">
-                <div
-                  className={`h-3 rounded-full transition-all duration-500 ${
-                    user.studentData?.profileCompletion >= 80
-                      ? "bg-green-500"
-                      : user.studentData?.profileCompletion >= 50
-                      ? "bg-yellow-500"
-                      : "bg-red-400"
-                  }`}
-                  style={{ width: `${user.studentData?.profileCompletion || 0}%` }}
-                />
-              </div>
-              <p className="text-xs text-gray-400 mt-2">
-                {user.studentData?.profileCompletion >= 80
-                  ? "✅ Profile almost complete!"
-                  : user.studentData?.profileCompletion >= 50
-                  ? "⚠️ Keep filling your profile"
-                  : "❌ Please complete your profile"}
-              </p>
-            </div>
-
+            <ProfileMeter studentData={user.studentData} />
             {/* FIELDS */}
             {editMode ? (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
