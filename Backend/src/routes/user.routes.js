@@ -110,34 +110,19 @@ router.put('/profile', authMiddleware, async (req, res) => {
     // id student have then also change the student data
     if (req.user.role === 'student') {
       const {
-        preferredCountry,
-        qualification,
-        city,
-        state,
-        country,
-        fatherName,
-        motherName,
-        dob,
-        WhatsApp,
-        address,
-        pinCode
+        preferredCountry,qualification,city,state,country,
+        fatherName,motherName,dob,WhatsApp,address,pinCode,
+        education,passingYear,schoolName,ieltsScore,toeflScore,pteScore,
+        visaType,intakeYear,courseMajor,leadReferrence,nationality,phone
       } = req.body;
 
       await Student.findOneAndUpdate(
         { user: req.user._id },
         {
-          preferredCountry,
-          qualification,
-          city,
-          state,
-          country,
-          fatherName,
-          motherName,
-          dob,
-          WhatsApp,
-          address,
-          pinCode,
-          phone
+          preferredCountry,qualification,city,state,country,
+          fatherName,motherName,dob,WhatsApp,address,pinCode,
+          phone,education,passingYear,schoolName,ieltsScore,toeflScore,pteScore,
+          visaType,intakeYear,courseMajor,leadReferrence,nationality
         }
       );
 

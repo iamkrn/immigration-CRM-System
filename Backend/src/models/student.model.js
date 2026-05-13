@@ -32,11 +32,22 @@ const studentSchema = new mongoose.Schema({
     education:String,
     qualification:String,
     passingYear:String,
+    nationality:String,
+    schoolName:String,
+
+    //Exam Score
+        ieltsScore:String,
+        toeflScore:String,
+        pteScore:String,
 
     //Immigration
     preferredCountry:String,
     visaType:String,
     intakeYear: String,
+    courseMajor:String,
+     
+    //lead
+    leadReferrence:String,
 
     //CRM
     leadStatus:{
@@ -82,8 +93,7 @@ lastMessageAt: {
   type: Date
 },
 
-   //future
-   ieltsScore:String,
+   //Documents  (string urls)
    passport:String,
    sop:String,
    lor:String,

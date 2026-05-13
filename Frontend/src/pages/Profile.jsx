@@ -26,6 +26,17 @@ function Profile() {
           dob: u.studentData?.dob || "",
           WhatsApp: u.studentData?.WhatsApp || "",
           address: u.studentData?.address || "",
+          education: u.studentData?.education || "",
+          passingYear: u.studentData?.passingYear || "",
+          intakeYear: u.studentData?.intakeYear || "",
+          visaType: u.studentData?.visaType || "",
+          ieltsScore: u.studentData?.ieltsScore || "",
+          toeflScore: u.studentData?.toeflScore || "",
+          pteScore: u.studentData?.pteScore || "",
+          courseMajor: u.studentData?.courseMajor || "",
+          nationality: u.studentData?.nationality || "",
+          schoolName: u.studentData?.schoolName || "",
+
         });
       })
       .catch(err => console.log(err));
@@ -103,6 +114,7 @@ function Profile() {
             <>
               <Info label="Name" value={user.name} />
               <Info label="Email" value={user.email} />
+
               <Info label="Phone" value={user.phone || "-"} />
             </>
           )}
@@ -130,19 +142,62 @@ function Profile() {
                 <Field label="City" name="city" value={form.city} onChange={handleChange} />
                 <Field label="State" name="state" value={form.state} onChange={handleChange} />
                 <Field label="Country" name="country" value={form.country} onChange={handleChange} />
-              </div>
+                {/* Academic Section */}
+                <div className="col-span-2 mt-2">
+                  <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">
+                    Academic Info
+                  </p>
+                </div>
+                <Field label="Education Level" name="education"            value={form.education}     onChange={handleChange} />
+                <Field label="Qualification / Degree" name="qualification" value={form.qualification} onChange={handleChange} />
+                <Field label="Passing Year" name="passingYear"             value={form.passingYear}   onChange={handleChange} />
+                <Field label="School Name" name="schoolName"               value={form.schoolName}    onChange={handleChange} />
+                <Field label="Nationality" name="nationality"              value={form.nationality}   onChange={handleChange} />
+
+                {/* Exam Scores */}
+                <div className="col-span-2 mt-2">
+                  <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">
+Exam Scores
+                  </p>
+                </div>
+                <Field label="IELTS Score" name="ieltsScore" value={form.ieltsScore} onChange={handleChange} />
+                <Field label="TOEFL Score" name="toeflScore" value={form.toeflScore} onChange={handleChange} />
+                <Field label="PTE Score" name="pteScore"     value={form.pteScore}   onChange={handleChange} />
+
+                {/* Preferences */}
+                <div className="col-span-2 mt-2">
+                  <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">
+                    Course Preferences
+                  </p>
+                </div>
+                <Field label="Preferred Country" name="preferredCountry" value={form.preferredCountry} onChange={handleChange} />
+                <Field label="Course Major" name="courseMajor"           value={form.courseMajor}      onChange={handleChange} />
+                <Field label="Intake Year" name="intakeYear"             value={form.intakeYear}       onChange={handleChange} />
+                <Field label="Visa Type" name="visaType"                 value={form.visaType}         onChange={handleChange} />
+                </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <Info label="Preferred Country" value={user.studentData?.preferredCountry || "-"} />
-                <Info label="Qualification" value={user.studentData?.qualification || "-"} />
-                <Info label="Date of Birth" value={user.studentData?.dob || "-"} />
-                <Info label="WhatsApp" value={user.studentData?.WhatsApp || "-"} />
-                <Info label="Father Name" value={user.studentData?.fatherName || "-"} />
-                <Info label="Mother Name" value={user.studentData?.motherName || "-"} />
-                <Info label="Address" value={user.studentData?.address || "-"} />
-                <Info label="City" value={user.studentData?.city || "-"} />
-                <Info label="State" value={user.studentData?.state || "-"} />
-                <Info label="Country" value={user.studentData?.country || "-"} />
+                <Info label="Preferred Country"  value={user.studentData?.preferredCountry || "-"} />
+                <Info label="Qualification"      value={user.studentData?.qualification || "-"} />
+                <Info label="Date of Birth"      value={user.studentData?.dob || "-"} />
+                <Info label="WhatsApp"           value={user.studentData?.WhatsApp || "-"} />
+                <Info label="Father Name"        value={user.studentData?.fatherName || "-"} />
+                <Info label="Mother Name"        value={user.studentData?.motherName || "-"} />
+                <Info label="Address"            value={user.studentData?.address || "-"} />
+                <Info label="City"               value={user.studentData?.city || "-"} />
+                <Info label="State"              value={user.studentData?.state || "-"} />
+                <Info label="Country"            value={user.studentData?.country || "-"} />
+              
+                <Info label="Education Level"    value={user.studentData?.education    || "-"} />
+                <Info label="Passing Year"       value={user.studentData?.passingYear   || "-"} />
+                <Info label="School Name"        value={user.studentData?.schoolName    || "-"} />
+                <Info label="Nationality"        value={user.studentData?.nationality   || "-"} />
+                <Info label="IELTS Score"        value={user.studentData?.ieltsScore    || "-"} />
+                <Info label="TOEFL Score"        value={user.studentData?.toeflScore    || "-"} />
+                <Info label="PTE Score"          value={user.studentData?.pteScore      || "-"} />
+                <Info label="Course Major"       value={user.studentData?.courseMajor   || "-"} />
+                <Info label="Intake Year"        value={user.studentData?.intakeYear    || "-"} />
+                <Info label="Visa Type"          value={user.studentData?.visaType      || "-"} />
               </div>
             )}
           </div>
@@ -188,7 +243,7 @@ function Profile() {
 
 const Info = ({ label, value }) => (
   <div className="bg-gray-50 p-4 rounded-lg border">
-    <p className="text-sm text-gray-500">{label}</p>
+    <p className="text-sm text-gray-500">           {label}</p>
     <p className="font-semibold text-gray-800 mt-1">{value}</p>
   </div>
 );

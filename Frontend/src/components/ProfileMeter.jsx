@@ -30,7 +30,8 @@ const ProfileMeter = ({ studentData }) => {
     },
     {
       label: "Visa Info", weight: 10,
-      earned: (s.visaType?5:0)+(s.ieltsScore?5:0),
+      earned: (s.visaType ? 5:0)+
+      ((s.ieltsScore || s.toeflScore || s.pteScore ? 5:0)),
       max: 10
     }
   ];
