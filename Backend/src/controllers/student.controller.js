@@ -2,7 +2,7 @@ const { json } = require('express');
 const Student = require('../models/student.model');
 
 // Profile Completion Calculator
-const calculateProfileCompletion = (student) => {
+exports.calculateProfileCompletion = (student) => {
   let score = 0;
 
   // Basic Info → 20%
@@ -77,7 +77,7 @@ exports.createStudent = async (req, res) => {
       });
     }
     
-    const completion = calculateProfileCompletion(req.body);
+    const completion = this.calculateProfileCompletion(req.body);
 
     //create Student
     const student = new Student({
@@ -144,7 +144,7 @@ exports.getStudentById = async(req,res)=>{
 //Update Student
 exports.updateStudent = async(req,res) => {
     try {
-        const completion = calculateProfileCompletion(req.body);
+        const completion = this.calculateProfileCompletion(req.body);
         req.body.profileCompletion = completion;
 
         const student = await Student.findByIdAndUpdate(

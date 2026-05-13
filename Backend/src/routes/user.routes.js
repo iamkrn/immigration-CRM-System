@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
+const {calculateProfileCompletion} = require('../controllers/student.controller')
 const { authMiddleware } = require('../middlewares/auth.middleware');
 const { roleMiddleware } = require('../middlewares/roles.middlewares');
 const Student = require('../models/student.model')
@@ -35,7 +36,6 @@ router.get('/profile', authMiddleware, async (req, res) => {
   }
 });
 
-
 //  ADMIN ONLY
 
 router.get(
@@ -60,8 +60,6 @@ router.get(
     }
   }
 );
-
-
 
 //  COUNSELLOR ONLY (optional add)
 
@@ -142,6 +140,12 @@ router.put('/profile', authMiddleware, async (req, res) => {
           phone
         }
       );
+
+      const updateStudent = await Student.findOne({user: req.user._id});
+      if(updateStudent) {
+        const newScore = calculateProfileCompletion(updateStudent);
+        await Student.findOneAndUpdate({user:req.user._id}, {profileCompletion:newScore});
+      }
     }
 
     res.status(200).json({
