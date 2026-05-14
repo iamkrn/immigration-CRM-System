@@ -26,6 +26,7 @@ import AddDocument from "./Forms-pages/AddDocument";
 import ProtectedRoute from "./components/ProtectedRoutes";
 import PublicRoute from "./components/PublicRoutes";
 import RoleRoute from "./components/RoleRoute";
+import Shortlist from "./pages/Shortlist";
 
 const App = () => {
   return (
@@ -74,7 +75,8 @@ const App = () => {
           <Route path="profile" element={<Profile />} />
           
           <Route path="applications" element={<Application />} />
-                    <Route path="/chat" element = {<Chat />}/>
+          <Route path="/chat" element = {<Chat />}/>
+          <Route path="/shortlist" element={<Shortlist/>} />
 
           <Route path="/documents/:applicationId" element={<Document />} />
           <Route path="add-document/:applicationId" element={<AddDocument />} />

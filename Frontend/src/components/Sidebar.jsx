@@ -4,9 +4,7 @@ import {
   MdPeople,
   MdDescription,
   MdPerson,
-  MdLogout,
-  MdSchool,
-  MdChat
+  MdLogout,MdSchool,MdChat,MdFormatListBulleted
 } from "react-icons/md";
 
 const Sidebar = () => {
@@ -112,13 +110,25 @@ const Sidebar = () => {
         )}
 
         <div className="my-2 border-t" style={{ borderColor: "rgba(255,255,255,0.06)" }} />
-
+         
+         {( role === "counsellor" || role === "student" || role === "admin" || role === 'superAdmin' ) && (
          <NavLink to="/chat" 
           className={menuClass}
          style={({ isActive }) => isActive ? activeStyle : {}}>
           <MdChat size={18} />
             Chat
           </NavLink> 
+          )}
+          {(role === "counsellor" || role === "student" || role === "admin" || role === 'superAdmin' ) && (
+          <NavLink to="/shortlist"
+            className={menuClass}
+            style={({ isActive }) => isActive ? activeStyle : {}}>
+            <MdFormatListBulleted size={18} />
+            Shortlist
+          </NavLink>
+        )}
+
+
 
         <NavLink to="/profile"
           className={menuClass}
