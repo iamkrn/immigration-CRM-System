@@ -36,8 +36,10 @@ exports.getApplications = async (req, res) => {
     }
   //student only
     if (req.user.role === "student") {
-  query.student = req.user._id;
-   }
+      const Student  =  require('../models/student.model');
+      const studentDoc = await Student.findOne({user :req.user.id});
+      if(studentDoc) query.student = studentDoc._id
+    }
 
 
     const apps = await Application

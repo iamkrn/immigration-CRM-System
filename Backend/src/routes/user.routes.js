@@ -36,12 +36,12 @@ router.get('/profile', authMiddleware, async (req, res) => {
   }
 });
 
-//  ADMIN ONLY
+
 
 router.get(
   '/admin',
   authMiddleware,
-  roleMiddleware('admin'),
+  roleMiddleware('admin','superAdmin'),
   (req, res) => {
     try {
       res.status(200).json({
@@ -66,7 +66,7 @@ router.get(
 router.get(
   '/counsellor',
   authMiddleware,
-  roleMiddleware('counsellor', 'admin'),
+  roleMiddleware('counsellor', 'admin', 'superAdmin'),
   (req, res) => {
     res.status(200).json({
       success: true,

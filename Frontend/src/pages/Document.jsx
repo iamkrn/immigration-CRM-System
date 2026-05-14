@@ -36,6 +36,7 @@ const Document = () => {
       await API.delete(`/documents/${id}`);
       fetchDocs();
     } catch (error) {
+      console.log(error)
       alert('Delete failed');
     }
   };
@@ -45,6 +46,7 @@ const Document = () => {
       await API.put(`/documents/${id}/status`, { status });
       fetchDocs();
     } catch (error) {
+      console.log(error)
       alert("Status update failed");
     }
   };
@@ -182,7 +184,7 @@ const Document = () => {
                   <td className="p-4">
                     <div className="flex items-center gap-2 flex-wrap">
 
-                      {(role === "admin" || role === "counsellor" || role === "superadmin") && (
+                      {(role === "admin" || role === "counsellor" || role === "superAdmin") && (
                         <>
                           {d.status !== "approved" && (
                             <button

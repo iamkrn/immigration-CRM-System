@@ -5,7 +5,13 @@ const PublicRoutes = ({ children }) => {
 
   
   if (token) {
-    return <Navigate to="/" />;
+     const user = JSON.parse(localStorage.getItem('user'));
+     const role = user?.role;
+     if(role === 'admin' || role === 'superAdmin'){
+       return <Navigate to='/admin/dashboard'/>
+     }
+       return <Navigate to='/'/>
+
   }
 
   return children;

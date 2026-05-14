@@ -7,13 +7,13 @@ exports.getShortlist = async (req,res) => {
     const {studentId} = req.params;
     const shortlist =  await Shortlist.findOne ({studentId})
     .populate('createdBy', 'name')
-    .populate (unversities.addedBy, 'name')  ;
+    .populate ('universities.addedBy', 'name')  ;
     
     if(!shortlist) {return res.json({ data: null, success: true})}
 
     res.json({success:true, data :shortlist})
  } catch (error) {
-     console.log(error),
+     console.log(error);
      res.status(500).json({message:error.message, success :false})
  }
 };
@@ -24,7 +24,7 @@ exports.addUniversity = async (req,res) => {
         const {studentId} = req.params;
         const {name,country, reason, course} = req.body;
 
-        const shortlist = await Shortlist.findone({studentId});
+        let shortlist = await Shortlist.findOne({studentId});
 
         if(!shortlist) {
             //create new shortlist
@@ -44,7 +44,7 @@ exports.addUniversity = async (req,res) => {
         await shortlist.save();
         res.json({data: shortlist , success:true})
     } catch (error) {
-        console.log(error),
+        console.log(error);
         res.status(500).json({message:error.message, success :false})
     }
 }
@@ -83,7 +83,7 @@ exports.deleteUniversity = async (req,res) => {
         res.json({success:true, data:shortlist});
         
     } catch (error) {
-      console.log(error),
+      console.log(error);
       res.status(500).json({message:error.message, success: false})  
     } 
 

@@ -16,7 +16,7 @@ const {roleMiddleware} = require('../middlewares/roles.middlewares')
 router.post(
   '/',
   authMiddleware,
-  roleMiddleware('admin', 'counsellor'),
+  roleMiddleware('admin', 'counsellor','superAdmin'),
   createApplication
 );
 
@@ -30,7 +30,7 @@ router.get('/:id', authMiddleware, getApplicationById);
 router.put(
   '/:id',
   authMiddleware,
-  roleMiddleware('admin', 'counsellor'),
+  roleMiddleware('admin', 'counsellor','superAdmin'),
   updateApplication
 );
 

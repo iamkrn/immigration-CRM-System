@@ -26,7 +26,7 @@ router.get(
 router.delete(
   '/:id',
   authMiddleware,
-  roleMiddleware('admin','counsellor'),
+  roleMiddleware('admin','counsellor','superAdmin'),
   deleteDocument
 );
 
@@ -34,7 +34,7 @@ router.delete(
 router.put(
   '/:id/status',
   authMiddleware,
-  roleMiddleware('admin','counsellor'),
+  roleMiddleware('admin','counsellor','superAdmin'),
   updateDocumentStatus
 )
 

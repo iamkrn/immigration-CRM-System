@@ -12,21 +12,20 @@ const {
 const { authMiddleware } = require('../middlewares/auth.middleware');
 const { roleMiddleware } = require('../middlewares/roles.middlewares');
 
-// CREATE (admin + counsellor)
+
 router.post(
   '/',
   authMiddleware,
-  roleMiddleware('admin', 'counsellor'),
+  roleMiddleware('admin', 'counsellor','superAdmin'),
   createStudent
 );
 
-// GET ALL (sab login user)
 router.get('/', authMiddleware, getStudents);
 
-// GET ONE (sab login user)
+
 router.get('/:id', authMiddleware, getStudentById);
 
-// UPDATE (admin + counsellor)
+
 router.put(
   '/:id',
   authMiddleware,
@@ -34,7 +33,6 @@ router.put(
   updateStudent
 );
 
-// DELETE (admin only )
 router.delete(
   '/:id',
   authMiddleware,

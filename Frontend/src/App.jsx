@@ -80,7 +80,12 @@ const App = () => {
 
           <Route path="/documents/:applicationId" element={<Document />} />
           <Route path="add-document/:applicationId" element={<AddDocument />} />
-          <Route path="/students" element={<Students />} />
+          
+          <Route path="/students" element={
+            <RoleRoute allowedRoles={["admin", "counsellor", "superAdmin"]}>
+              <Students />
+            </RoleRoute>
+          } />
 
           {/* Admin + Counsellor only */}
           <Route path="customers" element={
