@@ -2,14 +2,14 @@ const mongoose = require("mongoose");
 
 const applicationSchema = new mongoose.Schema({
 
-  // 🔗 Student reference
+
   student: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Student",
     required: true
   },
 
-  //  NEW FIELD (IMPORTANT)
+
   createdBy: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
@@ -52,17 +52,52 @@ const applicationSchema = new mongoose.Schema({
   default: "not_started"
 },
 
-  // Extra notes
-  remarks: {
+   remarks: {
     type: String
   },
 
-  // Timeline
-  appliedDate: {
+  //offer-management
+    offerLetter:{
+    type:String //URL
+    },
+
+     offerStatus: {
+      type: String,
+      enum: ['pending', 'accepted', 'rejected', 'withdrawn'],
+      default: 'pending'
+    },
+    acceptanceDeadline: {
+      type: Date
+    },
+    depositPaid: {
+      type: Boolean,
+      default: false
+    },
+    tuitionFeePaid: {
+      type: Boolean,
+      default: false
+    },
+
+    // Timeline
+     appliedDate: {
     type: Date,
     default: Date.now
-  }
+    },
 
-}, { timestamps: true });
+    // Visa Preparation
+      interviewDate: { type: Date },
+      preDepartureNotes: { type: String },
+      visaChecklist: [
+        {
+          item:      { type: String },
+          completed: { type: Boolean, default: false }
+        }
+      ],
+
+
+    }, 
+    { 
+      timestamps: true 
+    });
 
 module.exports = mongoose.model("Application", applicationSchema);

@@ -11,8 +11,16 @@ const EditApplication = () => {
     intake: "",
     student: "",
     status: "draft",
-    visaStatus: "not_started"
-  });
+    visaStatus: "not_started", 
+    offerLetter: "",
+    offerStatus: "pending",
+    acceptanceDeadline: "",
+    depositPaid: false,
+    tuitionFeePaid: false,
+    interviewDate: "",
+    preDepartureNotes: "",
+
+});
 
   
   const { id } = useParams();
@@ -96,7 +104,15 @@ const EditApplication = () => {
         intake: res.data.data.intake || "",
         student: res.data.data.student?._id || "",
         status: res.data.data.status || "draft",
-        visaStatus: res.data.data.visaStatus || "not_started"
+        visaStatus: res.data.data.visaStatus || "not_started",
+        offerLetter: res.data.data.offerLetter || "",
+        offerStatus: res.data.data.offerStatus || "pending",
+        acceptanceDeadline: res.data.data.acceptanceDeadline?.slice(0,10) || "",
+        depositPaid: res.data.data.depositPaid || false,
+        tuitionFeePaid: res.data.data.tuitionFeePaid || false,
+        interviewDate: res.data.data.interviewDate?.slice(0,10) || "",
+        preDepartureNotes: res.data.data.preDepartureNotes || "",     
+
       });
 
     }  catch (error) {
@@ -248,6 +264,100 @@ const EditApplication = () => {
                   </option>
                 ))}
               </select>
+          </div>
+          {/* ── OFFER MANAGEMENT ── */}
+          <div>
+            <h2 className="text-lg font-semibold mb-3 text-gray-600">
+              🎓 Offer Management
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+              <div className="flex flex-col gap-1">
+                <label className="text-sm text-gray-500 font-medium">Offer Letter URL</label>
+                <input
+                  name="offerLetter"
+                  value={form.offerLetter}
+                  onChange={handleChange}
+                  placeholder="https://university.com/offer.pdf"
+                  className="input"
+                />
+              </div>
+
+              <div className="flex flex-col gap-1">
+                <label className="text-sm text-gray-500 font-medium">Offer Status</label>
+                <select name="offerStatus" value={form.offerStatus} onChange={handleChange} className="input">
+                  <option value="pending">Pending</option>
+                  <option value="accepted">Accepted</option>
+                  <option value="rejected">Rejected</option>
+                  <option value="withdrawn">Withdrawn</option>
+                </select>
+              </div>
+
+              <div className="flex flex-col gap-1">
+                <label className="text-sm text-gray-500 font-medium">Acceptance Deadline</label>
+                <input
+                  type="date"
+                  name="acceptanceDeadline"
+                  value={form.acceptanceDeadline}
+                  onChange={handleChange}
+                  className="input"
+                />
+              </div>
+
+              <div className="flex flex-col gap-3 justify-center">
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={form.depositPaid}
+                    onChange={e => setForm({...form, depositPaid: e.target.checked})}
+                    className="w-4 h-4 accent-blue-500"
+                  />
+                  <span className="text-sm text-gray-600 font-medium">Deposit Paid</span>
+                </label>
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={form.tuitionFeePaid}
+                    onChange={e => setForm({...form, tuitionFeePaid: e.target.checked})}
+                    className="w-4 h-4 accent-blue-500"
+                  />
+                  <span className="text-sm text-gray-600 font-medium">Tuition Fee Paid</span>
+                </label>
+              </div>
+
+            </div>
+          </div>
+          {/* ── VISA PREPARATION ── */}
+          <div>
+            <h2 className="text-lg font-semibold mb-3 text-gray-600">
+              🛂 Visa Preparation
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+              <div className="flex flex-col gap-1">
+                <label className="text-sm text-gray-500 font-medium">Interview Date</label>
+                <input
+                  type="date"
+                  name="interviewDate"
+                  value={form.interviewDate}
+                  onChange={handleChange}
+                  className="input"
+                />
+              </div>
+
+              <div className="flex flex-col gap-1 md:col-span-2">
+                <label className="text-sm text-gray-500 font-medium">Pre-Departure Notes</label>
+                <textarea
+                  name="preDepartureNotes"
+                  value={form.preDepartureNotes}
+                  onChange={handleChange}
+                  placeholder="Flight details, accommodation, important docs to carry..."
+                  rows={3}
+                  className="input resize-none"
+                />
+              </div>
+
+            </div>
           </div>
 
           {/* Buttons */}

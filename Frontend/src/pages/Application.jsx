@@ -118,7 +118,7 @@ const Application = () => {
         <table className="w-full text-sm">
           <thead style={{ background: "#f8fafc" }}>
             <tr>
-              {["#", "Student", "University", "Country", "Course", "Status", "Actions"].map(h => (
+              {["#", "Student", "University", "Country", "Course", "Status", "offer", "visa", "Actions"].map(h => (
                 <th key={h} className="p-4 text-left text-xs font-semibold uppercase"
                   style={{ color: "#94a3b8", letterSpacing: "0.5px" }}>
                   {h}
@@ -182,6 +182,95 @@ const Application = () => {
                     </span>
                   </td>
 
+                  {/* Offer*/}
+                <td className="p-4">
+                  {a.offerLetter ? (
+                    <div className="flex flex-col gap-1">
+                      
+                        <a href={a.offerLetter}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="text-xs font-semibold px-2 py-1 rounded-lg text-center"
+                        style={{ background: "rgba(59,130,246,0.1)", color: "#3b82f6" }}
+                      >
+                        📄 View Offer
+                      </a>
+                      {a.acceptanceDeadline && (
+                        <p className="text-xs text-gray-400 text-center">
+                          Due: {new Date(a.acceptanceDeadline).toLocaleDateString()}
+                        </p>
+                      )}
+                      {/* Student Accept/Reject buttons */}
+                      {user.role === "student" && a.offerStatus === "pending" && (
+                        <div className="flex gap-1 mt-1">
+                          <button
+                            onClick={async () => {
+                              await API.put(`/applications/${a._id}`, { offerStatus: "accepted" });
+                              fetchApplication();
+                            }}
+                            className="flex-1 text-xs py-1 rounded font-semibold"
+                            style={{ background: "rgba(16,185,129,0.1)", color: "#10b981" }}
+                          >
+                            ✓ Accept
+                          </button>
+                          <button
+                            onClick={async () => {
+                              await API.put(`/applications/${a._id}`, { offerStatus: "rejected" });
+                              fetchApplication();
+                            }}
+                            className="flex-1 text-xs py-1 rounded font-semibold"
+                            style={{ background: "rgba(239,68,68,0.1)", color: "#ef4444" }}
+                          >
+                            ✗ Reject
+                          </button>
+                        </div>
+                      )}
+                      {a.offerStatus !== "pending" && (
+                        <span className="text-xs font-semibold text-center capitalize"
+                          style={{ color: a.offerStatus === "accepted" ? "#10b981" : "#ef4444" }}>
+                          {a.offerStatus}
+                        </span>
+                      )}
+                    </div>
+                  ) : (
+                    <span className="text-xs text-gray-300">No offer</span>
+                  )}
+                </td>
+                {/* Visa Column */}
+                <td className="p-4">
+                  <div className="flex flex-col gap-1">
+                    {/* Visa Status Badge */}
+                    <span className="text-xs font-semibold px-2 py-1 rounded-full text-center capitalize"
+                      style={{
+                        background: a.visaStatus === "approved" ? "rgba(16,185,129,0.1)"
+                          : a.visaStatus === "rejected" ? "rgba(239,68,68,0.1)"
+                          : a.visaStatus === "submitted" ? "rgba(59,130,246,0.1)"
+                          : "rgba(100,116,139,0.1)",
+                        color: a.visaStatus === "approved" ? "#10b981"
+                          : a.visaStatus === "rejected" ? "#ef4444"
+                          : a.visaStatus === "submitted" ? "#3b82f6"
+                          : "#64748b"
+                      }}>
+                      {a.visaStatus?.replaceAll("_", " ") || "not started"}
+                    </span>
+
+                    {/* Interview Date */}
+                    {a.interviewDate && (
+                      <p className="text-xs text-gray-500 text-center">
+                        🗓 {new Date(a.interviewDate).toLocaleDateString()}
+                      </p>
+                    )}
+
+                    {/* Pre Departure Notes */}
+                    {a.preDepartureNotes && user.role === "student" && (
+                      <p className="text-xs text-blue-500 text-center"
+                        title={a.preDepartureNotes}>
+                        📋 Guidance available
+                      </p>
+                    )}
+                  </div>
+                </td>
+
                   {/* Actions */}
                   <td className="p-4">
                     <div className="flex items-center gap-2">
@@ -216,6 +305,17 @@ const Application = () => {
                       >
                         <MdFolder size={15} />
                       </button>
+                      {/* Visa Checklist Button */}
+                    <button
+                      onClick={() => navigate(`/visa-checklist/${a._id}`)}
+                      className="w-8 h-8 rounded-lg flex items-center justify-center transition-all"
+                      style={{ background: "rgba(16,185,129,0.1)", color: "#10b981" }}
+                      title="Visa Checklist"
+                      onMouseEnter={e => e.currentTarget.style.background = "rgba(16,185,129,0.2)"}
+                      onMouseLeave={e => e.currentTarget.style.background = "rgba(16,185,129,0.1)"}
+                    >
+                      🛂
+                    </button>
                     </div>
                   </td>
                 </tr>

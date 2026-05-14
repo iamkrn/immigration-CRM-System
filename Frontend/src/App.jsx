@@ -27,6 +27,7 @@ import ProtectedRoute from "./components/ProtectedRoutes";
 import PublicRoute from "./components/PublicRoutes";
 import RoleRoute from "./components/RoleRoute";
 import Shortlist from "./pages/Shortlist";
+import VisaChecklist from "./pages/VisaChecklist";
 
 const App = () => {
   return (
@@ -77,10 +78,11 @@ const App = () => {
           <Route path="applications" element={<Application />} />
           <Route path="/chat" element = {<Chat />}/>
           <Route path="/shortlist" element={<Shortlist/>} />
+          <Route path="/visa-checklist/:id" element={<VisaChecklist/>}/>
 
           <Route path="/documents/:applicationId" element={<Document />} />
           <Route path="add-document/:applicationId" element={<AddDocument />} />
-          
+
           <Route path="/students" element={
             <RoleRoute allowedRoles={["admin", "counsellor", "superAdmin"]}>
               <Students />
