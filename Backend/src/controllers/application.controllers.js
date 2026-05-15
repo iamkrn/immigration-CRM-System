@@ -1,4 +1,5 @@
 const Application = require('../models/application.model');
+const Student  =  require('../models/student.model')
 const { sendStatusUpdateEmail } = require('../services/email.service');
 
 // CREATE Application
@@ -89,7 +90,8 @@ exports.getApplicationById = async (req, res) => {
             ? app.student._id.toString() 
             : app.student?.toString();
             
-          if (studentId !== req.user._id.toString()) {
+          const studentDoc = await Student.findOne({ user: req.user._id });
+          if (!studentDoc || studentId !== studentDoc._id.toString()) {
             return res.status(403).json({
               success: false,
               message: "Not allowed"

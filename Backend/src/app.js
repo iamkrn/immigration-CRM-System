@@ -10,6 +10,7 @@ const dashboardRoutes = require('./routes/dashboard.routes');
 const chatRoutes = require('./routes/chating-routes/chat.routes')
 const messageRoutes = require('./routes/chating-routes/message.routes')
 const shortlistRoutes = require('./routes/shortlist.routes')
+const feedbackRoutes = require('./routes/feedback.routes');
 
 
 app.use(cors({
@@ -29,5 +30,7 @@ app.use('/api/dashboard', dashboardRoutes);
 app.use('/api/chat',chatRoutes);
 app.use('/api/message',messageRoutes);
 app.use('/api/shortlist', shortlistRoutes);
+app.use('/api/feedback', feedbackRoutes);
+
 
 module.exports = app;

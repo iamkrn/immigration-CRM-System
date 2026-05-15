@@ -12,6 +12,7 @@ import Students from "./pages/Students";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Chat from "./pages/Chat";
+import Feedback from "./pages/Feedback";
 
 
 import AdminDashboard from "./pages/admin/AdminDashboard";
@@ -79,6 +80,7 @@ const App = () => {
           <Route path="/chat" element = {<Chat />}/>
           <Route path="/shortlist" element={<Shortlist/>} />
           <Route path="/visa-checklist/:id" element={<VisaChecklist/>}/>
+          <Route path="/feedback/:applicationId" element={<Feedback />} />
 
           <Route path="/documents/:applicationId" element={<Document />} />
           <Route path="add-document/:applicationId" element={<AddDocument />} />

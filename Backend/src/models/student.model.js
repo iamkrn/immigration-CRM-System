@@ -47,7 +47,7 @@ const studentSchema = new mongoose.Schema({
     courseMajor:String,
      
     //lead
-    leadReferrence:String,
+    leadReference:String,
 
     //CRM
     leadStatus:{

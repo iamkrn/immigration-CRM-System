@@ -12,10 +12,7 @@ const Dashboard = () => {
   const role = user?.role;
 
   useEffect(() => {
-    fetchDashboard();
-  }, []);
-
-  const fetchDashboard = async () => {
+    const fetchDashboard = async () => {
     try {
       const res = await API.get("/dashboard");
       setData(res.data);
@@ -23,6 +20,10 @@ const Dashboard = () => {
       console.log(error);
     }
   };
+    fetchDashboard();
+  }, []);
+
+  
 
   if (!data) {
     return (

@@ -316,6 +316,20 @@ const Application = () => {
                     >
                       🛂
                     </button>
+                    {/* Rate Counsellor */}
+                    {user.role === "student" &&
+                    (a.visaStatus === "approved" || a.visaStatus === "visa_approved") && (
+                      <button
+                        onClick={() => navigate(`/feedback/${a._id}`)}
+                        className="w-8 h-8 rounded-lg flex items-center justify-center transition-all"
+                        style={{ background: "rgba(245,158,11,0.1)", color: "#f59e0b" }}
+                        title="Rate Counsellor"
+                        onMouseEnter={e => e.currentTarget.style.background = "rgba(245,158,11,0.2)"}
+                        onMouseLeave={e => e.currentTarget.style.background = "rgba(245,158,11,0.1)"}
+                      >
+                        ⭐
+                      </button>
+                    )}
                     </div>
                   </td>
                 </tr>
