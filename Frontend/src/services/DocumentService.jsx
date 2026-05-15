@@ -8,14 +8,16 @@ import API from "./API";
 const documentService = {
 
   // Multiple files upload
-  upload: (applicationId, type, files) => {
+  upload: (applicationId, type, files, onProgress) => {
     const formData = new FormData();
     formData.append("application", applicationId);
     formData.append("type", type);
-    files.forEach(file => formData.append("files", file)); // 'files' = backend field name
+    files.forEach(file => formData.append("files", file));
     return API.post("/documents", formData, {
       headers: { "Content-Type": "multipart/form-data" },
-      onUploadProgress: (e) => Math.round((e.loaded * 100) / e.total) // progress %
+      onUploadProgress: (e) => {
+        if (onProgress) onProgress(Math.round((e.loaded * 100) / e.total));
+      }
     });
   },
 
