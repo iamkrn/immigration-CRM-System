@@ -62,7 +62,9 @@ useEffect(() => {
  useEffect(() => {
   if (!isConnected) return
   const handleMessage = (newMsg) => {
-    setMessages((prev) => [...prev, newMsg])
+      if (newMsg.chatId === activeChat?._id) {
+        setMessages((prev) => [...prev, newMsg])
+      }
   }
   socket?.current?.on("receiveMessage", handleMessage)
   return () => socket?.current?.off("receiveMessage", handleMessage)
@@ -212,7 +214,9 @@ useEffect(() => {
               backgroundImage: "url(\"data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000000' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E\")"
             }}>
             {messages.map((msg) => {
-              const isMine = msg.senderId === user._id || msg.senderId?._id === user._id
+
+              const senderId = typeof msg.senderId === "object" ? msg.senderId?._id : msg.senderId;
+              const isMine = senderId?.toString() === user._id?.toString();              
               return (
                 <div key={msg._id} className={`flex ${isMine ? "justify-end" : "justify-start"}`}>
                   <div className="max-w-[65%] px-3 py-2 rounded-lg text-sm shadow-sm relative"

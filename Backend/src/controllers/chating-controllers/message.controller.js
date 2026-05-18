@@ -22,7 +22,10 @@ exports.sendMessage = async (req, res) => {
     let resolvedReceiverId = receiverId;
     if (senderModel === "User") {
       // counsellor is sending → receiver is a Student → find their User account
+     if (!receiverId) return res.status(400).json({ error: "receiverId is required" });
+
       const studentDoc = await Student.findById(receiverId).select("user");
+
       if (studentDoc?.user) resolvedReceiverId = studentDoc.user.toString();
     }
 

@@ -1,8 +1,15 @@
-const express =  require('express');
-const { LoginUser, registerUser } = require('../controllers/auth.controller');
-const router = express.Router()
+const express = require('express');
+const router = express.Router();
 
+const { LoginUser, registerUser, adminCreateUser } = require('../controllers/auth.controller'); 
+const { authMiddleware } = require('../middlewares/auth.middleware');
+const { roleMiddleware } = require('../middlewares/roles.middlewares');
+
+// Public Routes
 router.post('/login', LoginUser);
-router.post('/register',registerUser)
+router.post('/register', registerUser);
+
+// Protected — only admin/superAdmin can create counsellor/admin
+router.post('/admin/create-user', authMiddleware, roleMiddleware('admin', 'superAdmin'), adminCreateUser);
 
 module.exports = router;

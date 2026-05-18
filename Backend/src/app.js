@@ -32,5 +32,14 @@ app.use('/api/message',messageRoutes);
 app.use('/api/shortlist', shortlistRoutes);
 app.use('/api/feedback', feedbackRoutes);
 
+//Global error handler
+app.use((err, req, res, next) => {
+  console.error("Global Error:", err.stack);
+  res.status(err.status || 500).json({ 
+    error: err.message || "Internal Server Error" 
+  });
+});
+
+
 
 module.exports = app;

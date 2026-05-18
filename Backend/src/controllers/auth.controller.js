@@ -49,6 +49,42 @@ exports.registerUser = async (req, res) => {
   }
 };
 
+// NEW CONTROLLER — adminCreateUser
+exports.adminCreateUser = async (req, res) => {
+  try {
+    const { name, email, password, role } = req.body;
+
+    // Allowed roles for admin creation
+    const allowedRoles = ["counsellor", "admin", "superAdmin"];
+    if (!allowedRoles.includes(role)) {
+      return res.status(400).json({ message: "Invalid role. Allowed: counsellor, admin, superAdmin" });
+    }
+
+    const userExist = await User.findOne({ email });
+    if (userExist) {
+      return res.status(400).json({ message: "User already exists" });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const user = await User.create({
+      name,
+      email,
+      password: hashedPassword,
+      role, 
+    });
+
+    
+    if (role === "student") {
+      await Student.create({ firstName: name, email, user: user._id });
+    }
+
+    res.status(201).json({ user, message: `${role} created successfully` });
+
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
 exports.LoginUser = async(req,res) =>{
     try{
         const {email, password} = req.body

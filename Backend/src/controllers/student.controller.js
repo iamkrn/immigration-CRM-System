@@ -1,4 +1,3 @@
-const { json } = require('express');
 const Student = require('../models/student.model');
 const bcrypt = require('bcrypt');
 const User = require('../models/user.model');

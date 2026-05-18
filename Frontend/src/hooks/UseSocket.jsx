@@ -14,11 +14,20 @@ const useSocket = () => {
             { query: { userId: user._id }, withCredentials: true }
         )
 
-        socketRef.current.on("connect", () => {
-            console.log("Socket connected!", socketRef.current.id)
-            setIsConnected(true)  
-        })
 
+            socketRef.current.on("connect", () => {
+            console.log("Socket connected!", socketRef.current.id)
+            setIsConnected(true)
+            })
+
+            socketRef.current.on("disconnect", () => {
+            setIsConnected(false)
+            })
+
+            socketRef.current.on("connect_error", (err) => {
+            console.error("Socket connection error:", err.message)
+            setIsConnected(false)
+            })
         return () => {
             socketRef.current?.disconnect()
             setIsConnected(false)
