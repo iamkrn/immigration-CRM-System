@@ -46,7 +46,7 @@ const VisaChecklist = () => {
       item: i,
       completed: newChecked[i] || false
     }));
-    await API.put(`/applications/${id}`, { visaChecklist });
+    await API.patch(`/applications/${id}/visa-checklist`, { visaChecklist });
   };
 
   const done = Object.values(checked).filter(Boolean).length;

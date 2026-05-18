@@ -10,7 +10,7 @@ exports.submitFeedback = async (req, res) => {
     const studentDoc = await Student.findOne({ user: req.user._id });
     if (!studentDoc) return res.status(404).json({ success: false, message: 'Student not found' });
 
-    // check — already diya hai kya
+    
     const existing = await Feedback.findOne({ applicationId });
     if (existing) return res.status(400).json({ success: false, message: 'Feedback already submitted' });
 

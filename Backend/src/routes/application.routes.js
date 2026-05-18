@@ -26,6 +26,20 @@ router.get('/', authMiddleware, getApplications);
 // GET ONE
 router.get('/:id', authMiddleware, getApplicationById);
 
+router.patch(
+  '/:id/visa-checklist',
+  authMiddleware,
+  roleMiddleware('student'),
+  async (req, res) => {
+    const updated = await Application.findByIdAndUpdate(
+      req.params.id,
+      { visaChecklist: req.body.visaChecklist },
+      { new: true }
+    );
+    res.json({ success: true, data: updated });
+  }
+);
+
 // UPDATE
 router.put(
   '/:id',

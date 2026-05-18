@@ -134,7 +134,7 @@ exports.updateApplication = async (req, res) => {
       const updated = await Application.findByIdAndUpdate(
         req.params.id,
         req.body,
-        { new: true,runvalidators:true }
+        { new: true,runValidators:true }
       ).populate('student', 'email firstName');
 
       // send email if status changed and student email exists

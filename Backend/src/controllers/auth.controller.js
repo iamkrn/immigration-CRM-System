@@ -2,10 +2,13 @@ const User = require('../models/user.model')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const Student = require('../models/student.model')
+const { sendWelcomeEmail } = require('../services/email.service');
+
 
 exports.registerUser = async (req, res) => {
   try {
     const { name, email, password, role } = req.body;
+    
 
     const userExist = await User.findOne({ email });
 
@@ -32,6 +35,8 @@ exports.registerUser = async (req, res) => {
         user:user._id
       });
     }
+    sendWelcomeEmail({ toEmail: email, studentName: name }).catch(console.error);
+
 
     res.status(200).json({
       user,

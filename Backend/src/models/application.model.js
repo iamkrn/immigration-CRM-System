@@ -40,9 +40,10 @@ const applicationSchema = new mongoose.Schema({
 
   // Status tracking
   status: {
+    type:String,
   enum: ["draft", "submitted", "approved", "rejected",
          "offer_received", "visa_processing",
-         "visa_approved", "visa_rejected"],
+         "visa_approved", "visa_rejected","accepted"],
 },
 
   // Visa details

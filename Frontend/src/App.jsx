@@ -77,13 +77,13 @@ const App = () => {
           <Route path="profile" element={<Profile />} />
           
           <Route path="applications" element={<Application />} />
-          <Route path="/chat" element = {<Chat />}/>
-          <Route path="/shortlist" element={<Shortlist/>} />
-          <Route path="/visa-checklist/:id" element={<VisaChecklist/>}/>
-          <Route path="/feedback/:applicationId" element={<Feedback />} />
+          <Route path="chat" element = {<Chat />}/>
+          <Route path="shortlist" element={<Shortlist/>} />
+          <Route path="visa-checklist/:id" element={<VisaChecklist/>}/>
+          <Route path="feedback/:applicationId" element={<Feedback />} />
 
-          <Route path="/documents/:applicationId" element={<Document />} />
-          <Route path="add-document/:applicationId" element={<AddDocument />} />
+          <Route path="documents/:applicationId" element={<Document />} />
+          <Route path="/add-document/:applicationId" element={<AddDocument />} />
 
           <Route path="/students" element={
             <RoleRoute allowedRoles={["admin", "counsellor", "superAdmin"]}>

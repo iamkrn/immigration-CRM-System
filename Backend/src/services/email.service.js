@@ -8,20 +8,22 @@ const transporter = nodemailer.createTransport({
   }
 });
 
+
 const statusConfig = {
-  draft:     { label: 'Draft',     color: '#6B7280', emoji: '📝' },
-  submitted: { label: 'Submitted', color: '#3B82F6', emoji: '📤' },
-  approved:  { label: 'Approved',  color: '#10B981', emoji: '✅' },
-  rejected:  { label: 'Rejected',  color: '#EF4444', emoji: '❌' },
-
-  //visa status
-
-  not_started: { label: 'Not Applied', color: '#6B7280', emoji: '⏳' },
-  submitted:     { label: 'Submitted',     color: '#3B82F6', emoji: '📤' },
-  processing:  { label: 'Processing',  color: '#F59E0B', emoji: '🔄' },
-  approved:     { label: 'Approved',     color: '#10B981', emoji: '✅' },
-  rejected:     { label: 'Rejected',     color: '#EF4444', emoji: '❌' },
-  withdrawn:     { label: 'Withdrawn',     color: '#6B7280', emoji: '🚫' }
+  // Application status
+  draft:            { label: 'Draft',          color: '#6B7280', emoji: '📝' },
+  submitted:        { label: 'Submitted',       color: '#3B82F6', emoji: '📤' },
+  under_review:     { label: 'Under Review',    color: '#6366F1', emoji: '🔍' },
+  offer_received:   { label: 'Offer Received',  color: '#10B981', emoji: '🎉' },
+  approved:         { label: 'Approved',         color: '#10B981', emoji: '✅' },
+  rejected:         { label: 'Rejected',         color: '#EF4444', emoji: '❌' },
+  
+  // Visa status
+  not_started:      { label: 'Not Applied',      color: '#6B7280', emoji: '⏳' },
+  visa_processing:  { label: 'Visa Processing',  color: '#F59E0B', emoji: '🔄' },
+  visa_approved:    { label: 'Visa Approved',    color: '#10B981', emoji: '✅' },
+  visa_rejected:    { label: 'Visa Rejected',    color: '#EF4444', emoji: '❌' },
+  withdrawn:        { label: 'Withdrawn',        color: '#6B7280', emoji: '🚫' },
 };
 
 exports.verifyEmailService = async () => {
@@ -107,3 +109,50 @@ exports.sendStatusUpdateEmail = async ({ toEmail, studentName, university, cours
   } catch (error) {
     console.error(`Failed to send email to ${toEmail}:`, error.message);
   }};
+
+  // Welcome email — new student register 
+exports.sendWelcomeEmail = async ({ toEmail, studentName }) => {
+  try {
+    await transporter.sendMail({
+      from: `"360 College Review" <${process.env.EMAIL_USER}>`,
+      to: toEmail,
+      subject: `🎓 Welcome to 360 College Review, ${studentName}!`,
+      html: `
+        <!DOCTYPE html>
+        <html>
+          <body style="margin:0;padding:0;background:#f3f4f6;font-family:Arial,sans-serif;">
+            <div style="max-width:520px;margin:40px auto;background:#ffffff;border-radius:12px;overflow:hidden;">
+              <div style="background:#1e293b;padding:28px 32px;">
+                <h1 style="margin:0;color:#ffffff;font-size:20px;font-weight:600;">360 College Review</h1>
+                <p style="margin:4px 0 0;color:#94a3b8;font-size:13px;">Your Study Abroad Journey Starts Here</p>
+              </div>
+              <div style="padding:32px;">
+                <p style="margin:0 0 16px;color:#374151;font-size:16px;">
+                  Hello <strong>${studentName}</strong>! 👋
+                </p>
+                <p style="margin:0 0 16px;color:#6b7280;font-size:14px;line-height:1.6;">
+                  Welcome to <strong>360 College Review</strong>. Your account has been created successfully.
+                </p>
+                <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:20px;margin-bottom:24px;">
+                  <p style="margin:0 0 8px;color:#166534;font-size:14px;font-weight:600;"> Your account is ready</p>
+                  <p style="margin:0;color:#166534;font-size:13px;">Complete your profile to get matched with the best counsellor for your study abroad journey.</p>
+                </div>
+                <p style="margin:0;color:#6b7280;font-size:13px;line-height:1.6;">
+                  Login to your portal and complete your profile to get started.
+                </p>
+              </div>
+              <div style="background:#f8fafc;border-top:1px solid #e2e8f0;padding:16px 32px;">
+                <p style="margin:0;color:#9ca3af;font-size:12px;">
+                  This is an automated message from 360 College Review.
+                </p>
+              </div>
+            </div>
+          </body>
+        </html>
+      `
+    });
+    console.log(`Welcome email sent to ${toEmail}`);
+  } catch (error) {
+    console.error(`Welcome email failed:`, error.message);
+  }
+};

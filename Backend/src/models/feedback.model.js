@@ -16,7 +16,7 @@ const feedbackSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Application',
     required: true,
-    unique: true   // ek application pe sirf ek feedback
+    unique: true   
   },
   ratings: {
     knowledge:     { type: Number, min: 1, max: 5, required: true },

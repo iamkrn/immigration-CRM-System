@@ -113,7 +113,7 @@ router.put('/profile', authMiddleware, async (req, res) => {
         preferredCountry,qualification,city,state,country,
         fatherName,motherName,dob,WhatsApp,address,pinCode,
         education,passingYear,schoolName,ieltsScore,toeflScore,pteScore,
-        visaType,intakeYear,courseMajor,leadReferrence,nationality,phone
+        visaType,intakeYear,courseMajor,leadReference,nationality,phone
       } = req.body;
 
       await Student.findOneAndUpdate(
@@ -122,7 +122,7 @@ router.put('/profile', authMiddleware, async (req, res) => {
           preferredCountry,qualification,city,state,country,
           fatherName,motherName,dob,WhatsApp,address,pinCode,
           phone,education,passingYear,schoolName,ieltsScore,toeflScore,pteScore,
-          visaType,intakeYear,courseMajor,leadReferrence,nationality
+          visaType,intakeYear,courseMajor,leadReference,nationality
         }
       );
 

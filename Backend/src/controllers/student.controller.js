@@ -1,5 +1,8 @@
 const { json } = require('express');
 const Student = require('../models/student.model');
+const bcrypt = require('bcrypt');
+const User = require('../models/user.model');
+
 
 // Profile Completion Calculator
 exports.calculateProfileCompletion = (student) => {
@@ -77,18 +80,33 @@ exports.createStudent = async (req, res) => {
       });
     }
     
-    const completion = this.calculateProfileCompletion(req.body);
+     const completion = exports.calculateProfileCompletion(req.body);
 
     //create Student
     const student = new Student({
       ...req.body,
-      user: req.user._id ,
+      assignedTo: req.user._id ,
+      user:undefined,
       profileCompletion:completion  
     });
 
 
 
     await student.save();
+
+    const hashedPassword = await bcrypt.hash('123456', 10);
+
+        const newUser = await User.create({
+          name: firstName + ' ' + (lastName || ''),
+          email: email,
+          password: hashedPassword,
+          role: 'student'
+        });
+
+        await Student.findByIdAndUpdate(student._id, {
+          user: newUser._id
+        });
+
 
     res.status(200).json({
       message: "Student created successfully",
@@ -144,7 +162,7 @@ exports.getStudentById = async(req,res)=>{
 //Update Student
 exports.updateStudent = async(req,res) => {
     try {
-        const completion = this.calculateProfileCompletion(req.body);
+        const completion = exports.calculateProfileCompletion(req.body);
         req.body.profileCompletion = completion;
 
         const student = await Student.findByIdAndUpdate(
