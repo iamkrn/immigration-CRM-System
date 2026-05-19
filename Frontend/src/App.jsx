@@ -83,7 +83,7 @@ const App = () => {
           <Route path="feedback/:applicationId" element={<Feedback />} />
 
           <Route path="documents/:applicationId" element={<Document />} />
-          <Route path="/add-document/:applicationId" element={<AddDocument />} />
+          <Route path="add-document/:applicationId" element={<AddDocument />} />
 
           <Route path="/students" element={
             <RoleRoute allowedRoles={["admin", "counsellor", "superAdmin"]}>
@@ -97,22 +97,22 @@ const App = () => {
               <Customer />
             </RoleRoute>
           } />
-          <Route path="/add-customer" element={
+          <Route path="add-customer" element={
             <RoleRoute allowedRoles={["admin", "counsellor", "superAdmin"]}>
               <AddCustomer />
             </RoleRoute>
           } />
-          <Route path="/edit-customer/:id" element={
+          <Route path="edit-customer/:id" element={
             <RoleRoute allowedRoles={["admin", "counsellor", "superAdmin"]}>
               <EditCustomer />
             </RoleRoute>
           } />
-          <Route path="/add-application" element={
+          <Route path="add-application" element={
               <RoleRoute allowedRoles={["admin", "counsellor"]}>
                 <AddApplication />
               </RoleRoute>
             } />
-            <Route path="/edit-application/:id" element={
+            <Route path="edit-application/:id" element={
               <RoleRoute allowedRoles={["admin", "counsellor"]}>
                 <EditApplication />
               </RoleRoute>

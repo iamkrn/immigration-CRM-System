@@ -1,4 +1,6 @@
 const Document = require('../models/document.model');
+const Application = require('../models/application.model'); 
+const { sendNotification } = require('../services/notification.service'); 
 
 
 //create the documents
@@ -71,23 +73,45 @@ exports.deleteDocument = async(req,res) => {
     }
 }
 
-exports.updateDocumentStatus = async(req,res) => {
+exports.updateDocumentStatus = async (req, res) => {
   try {
-    const {status} =  req.body;
+    const { status } = req.body;
+
     const doc = await Document.findByIdAndUpdate(
       req.params.id,
-      {status},
-    { returnDocument: 'after' }   
-  );
-  res.json({
-    success:true,
-    data:doc
-  })
-  
+      { status },
+      { returnDocument: 'after' }
+    );
+
+    // ── FCM: Notify student when doc approved/rejected ──
+    if (status === 'approved' || status === 'rejected') {
+      // doc.application → Application → student → user
+      const app = await Application
+        .findById(doc.application)
+        .populate('student', 'user');
+
+      const recipientId = app?.student?.user;
+
+      if (recipientId) {
+        await sendNotification({
+          recipientId,
+          senderId: req.user._id,
+          type: status === 'approved' ? 'document_approved' : 'document_rejected',
+          title: status === 'approved' ? 'Document Approved ' : 'Document Rejected ',
+          body: `Your document "${doc.name}" has been ${status}.`,
+          data: {
+            applicationId: doc.application.toString(),
+            documentId: doc._id.toString(),
+          },
+        });
+      }
+    }
+    // ─────────────────────────────────────────
+
+    res.json({ success: true, data: doc });
+
   } catch (error) {
     console.log(error);
-    res.status(500).json({
-      message:error.message,
-      success:false
-    })
-  }}
+    res.status(500).json({ message: error.message, success: false });
+  }
+};

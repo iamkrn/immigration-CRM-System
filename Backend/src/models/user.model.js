@@ -38,10 +38,19 @@ const userSchema = new mongoose.Schema({
     default: true
   },
 
+   fcmToken: {
+      type: String,
+      default: null,
+      select: false,  
+    },
+
+
   student: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Student"
-  }
+  },
+
+    
 
 }, { timestamps: true });
 

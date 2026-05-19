@@ -74,11 +74,6 @@ exports.adminCreateUser = async (req, res) => {
       role, 
     });
 
-    
-    if (role === "student") {
-      await Student.create({ firstName: name, email, user: user._id });
-    }
-
     res.status(201).json({ user, message: `${role} created successfully` });
 
   } catch (error) {

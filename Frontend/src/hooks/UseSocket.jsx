@@ -32,7 +32,7 @@ const useSocket = () => {
             socketRef.current?.disconnect()
             setIsConnected(false)
         }
-    }, [user?._id ?? null])
+    }, [user?._id]);
 
     return { socket: socketRef, isConnected }  
 }

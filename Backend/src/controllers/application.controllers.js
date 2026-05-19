@@ -1,8 +1,10 @@
 const Application = require('../models/application.model');
 const Student  =  require('../models/student.model')
 const { sendStatusUpdateEmail } = require('../services/email.service');
+const { sendNotification } = require('../services/notification.service'); 
 
-// CREATE Application
+
+//  CREATE Application
 exports.createApplication = async (req, res) => {
   try {
     const app = new Application({
@@ -118,52 +120,85 @@ exports.updateApplication = async (req, res) => {
     const app = await Application.findById(req.params.id);
 
     if (!app) {
-      return res.status(404).json({
-        success: false,
-        message: "Application not found"
-      });
+      return res.status(404).json({ success: false, message: "Application not found" });
     }
-    
-    // status change check
-      const statusChanged = req.body.status && req.body.status !== app.status;
-    
-    // visa Satus change
+
+    const statusChanged = req.body.status && req.body.status !== app.status;
     const visaStatusChanged = req.body.visaStatus && req.body.visaStatus !== app.visaStatus;
+    const offerAdded = req.body.offerLetter && !app.offerLetter; // New offer letter uploaded
 
-      const updated = await Application.findByIdAndUpdate(
-        req.params.id,
-        req.body,
-        { new: true,runValidators:true }
-      ).populate('student', 'email firstName');
+    // ← ADD 'user' in populate so we get student's User._id
+    const updated = await Application.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true, runValidators: true }
+    ).populate('student', 'email firstName user'); 
 
-      // send email if status changed and student email exists
-      if ((statusChanged||visaStatusChanged) && updated?.student?.email) {
-        try {
-          await sendStatusUpdateEmail({
-            toEmail: updated.student.email,
-            studentName: updated.student.firstName || 'Student',
-            university: updated.university,
-            course: updated.course,
-            country: updated.country,
-            newStatus: updated.status || updated.visaStatus,
-            isVisa: visaStatusChanged
-
-          });
-        } catch (emailError) {
-          console.error('Email sending failed:', emailError.message);
-        }
+    // Email (same as before)
+    if ((statusChanged || visaStatusChanged) && updated?.student?.email) {
+      try {
+        await sendStatusUpdateEmail({
+          toEmail: updated.student.email,
+          studentName: updated.student.firstName || 'Student',
+          university: updated.university,
+          course: updated.course,
+          country: updated.country,
+          newStatus: updated.status || updated.visaStatus,
+          isVisa: visaStatusChanged
+        });
+      } catch (emailError) {
+        console.error('Email sending failed:', emailError.message);
       }
-    res.json({
-      success: true,
-      data: updated
-    });
+    }
+
+    // ── FCM Notifications ──
+    const recipientId = updated?.student?.user;
+
+    if (recipientId) {
+
+      // Application status changed
+      if (statusChanged) {
+        await sendNotification({
+          recipientId,
+          senderId: req.user._id,
+          type: 'application_update',
+          title: 'Application Status Updated 📋',
+          body: `Your application for ${updated.university} is now: ${updated.status}`,
+          data: { applicationId: updated._id.toString() },
+        });
+      }
+
+      // Visa status changed
+      if (visaStatusChanged) {
+        await sendNotification({
+          recipientId,
+          senderId: req.user._id,
+          type: 'visa_update',
+          title: 'Visa Status Updated 🛂',
+          body: `Your visa status for ${updated.university} is now: ${updated.visaStatus}`,
+          data: { applicationId: updated._id.toString() },
+        });
+      }
+
+      // New offer letter uploaded
+      if (offerAdded) {
+        await sendNotification({
+          recipientId,
+          senderId: req.user._id,
+          type: 'offer_received',
+          title: 'Offer Letter Received 🎓',
+          body: `You have received an offer from ${updated.university}. Please review it.`,
+          data: { applicationId: updated._id.toString() },
+        });
+      }
+    }
+    // ──────────────────────────────────────────
+
+    res.json({ success: true, data: updated });
 
   } catch (error) {
     console.log(error);
-    res.status(500).json({
-      success: false,
-      message: error.message
-    });
+    res.status(500).json({ success: false, message: error.message });
   }
 };
 
