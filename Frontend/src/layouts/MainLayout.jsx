@@ -3,14 +3,17 @@ import Footer from "../components/Footer";
 import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
 import { Outlet } from "react-router-dom";
+import useSocket from "../hooks/UseSocket";
+
 
 const MainLayout = () => {
   const [search, setSearch] = useState("")
+const { socket } = useSocket();
   return (
     <div className="flex flex-col h-screen">
       
       {/* Header */}
-      <Header setSearch={setSearch} />
+      <Header setSearch={setSearch} socket={socket} />
 
       {/* Main Section */}
       <div className="flex flex-1 overflow-hidden">

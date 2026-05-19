@@ -1,13 +1,16 @@
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { MdSearch, MdLogout, MdNotifications } from "react-icons/md";
+import { MdSearch, MdLogout } from "react-icons/md";
+import NotificationBell from "./NotificationBell";  
 
-const Header = ({ setSearch }) => {
+
+const Header = ({ setSearch,socket }) => {
   const navigate = useNavigate();
   const [input, setInput] = useState("");
   const user = JSON.parse(localStorage.getItem("user"));
 
   const handleLogout = () => {
+    localStorage.removeItem("fcmToken");             
     localStorage.clear();
     navigate("/login");
   };
@@ -15,7 +18,7 @@ const Header = ({ setSearch }) => {
   const handleSearch = (e) => {
     const value = e.target.value;
     setInput(value);
-    setSearch(value);
+    if(setSearch) setSearch(value);
   };
 
   return (
@@ -61,16 +64,8 @@ const Header = ({ setSearch }) => {
         </div>
 
         {/* Notification */}
-        <button className="relative w-9 h-9 rounded-xl flex items-center justify-center transition-all"
-          style={{ background: "#f1f5f9" }}
-          onMouseEnter={e => e.currentTarget.style.background = "#e2e8f0"}
-          onMouseLeave={e => e.currentTarget.style.background = "#f1f5f9"}
-        >
-          <MdNotifications size={18} className="text-gray-500" />
-          {/* Red dot */}
-          <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-red-500" />
-        </button>
-
+        <NotificationBell socket={socket} />
+          
         {/* User Info */}
         <div className="flex items-center gap-2.5 px-3 py-1.5 rounded-xl"
           style={{ background: "#f8fafc", border: "1px solid #e2e8f0" }}>

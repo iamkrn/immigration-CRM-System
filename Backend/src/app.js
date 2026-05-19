@@ -32,7 +32,7 @@ app.use('/api/chat',chatRoutes);
 app.use('/api/message',messageRoutes);
 app.use('/api/shortlist', shortlistRoutes);
 app.use('/api/feedback', feedbackRoutes);
-app.use('/api/notification',notificationRoutes)
+app.use('/api/notifications',notificationRoutes)
 
 //Global error handler
 app.use((err, req, res, next) => {
